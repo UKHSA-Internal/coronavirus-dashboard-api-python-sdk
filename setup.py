@@ -100,5 +100,6 @@ setup(
         'API SDK PHE COVID19 COVID-19 coronavirus data '
         'uk england wales scotland northern ireland united kingdom'
     ),
-    install_requires=get_requirements()
+    install_requires=get_requirements(),
+    python_requires='>=3.7'
 )
