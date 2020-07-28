@@ -59,7 +59,7 @@ def get_requirements():
 
 
 def readme():
-    with open(join(package_dir, 'README.md')) as f:
+    with open(join(package_dir, 'README.rst')) as f:
         return f.read()
 
 
@@ -92,7 +92,6 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Software Development',
         'Topic :: Database',
-        'Topic :: Internet :: WWW/HTTP'
         'Topic :: Internet :: WWW/HTTP :: Indexing/Search',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
