@@ -169,8 +169,8 @@ To get the latest data by a specific metric, run:
                 "areaCode": "E92000001",
                 "newCasesByPublishDate": 547,
                 "cumCasesByPublishDate": 259022,
-                "newDeathsByDeathDate": null,
-                "cumDeathsByDeathDate": null
+                "newDeathsByDeathDate": None,
+                "cumDeathsByDeathDate": None
             },
             {
                 "date": "2020-07-28",
@@ -178,8 +178,8 @@ To get the latest data by a specific metric, run:
                 "areaCode": "N92000002",
                 "newCasesByPublishDate": 9,
                 "cumCasesByPublishDate": 5921,
-                "newDeathsByDeathDate": null,
-                "cumDeathsByDeathDate": null
+                "newDeathsByDeathDate": None,
+                "cumDeathsByDeathDate": None
             },
             {
                 "date": "2020-07-28",
@@ -187,8 +187,8 @@ To get the latest data by a specific metric, run:
                 "areaCode": "S92000003",
                 "newCasesByPublishDate": 4,
                 "cumCasesByPublishDate": 18558,
-                "newDeathsByDeathDate": null,
-                "cumDeathsByDeathDate": null
+                "newDeathsByDeathDate": None,
+                "cumDeathsByDeathDate": None
             },
             {
                 "date": "2020-07-28",
@@ -196,14 +196,57 @@ To get the latest data by a specific metric, run:
                 "areaCode": "W92000004",
                 "newCasesByPublishDate": 21,
                 "cumCasesByPublishDate": 17191,
-                "newDeathsByDeathDate": null,
-                "cumDeathsByDeathDate": null
+                "newDeathsByDeathDate": None,
+                "cumDeathsByDeathDate": None
             }
         ],
         "lastUpdate": "2020-07-28T15:34:31.000000Z",
         "length": 4,
         "totalPages": 1
     }
+
+
+Set the ``save_as`` input argument to a path to save the data in a file. This
+functionality is only available for ``.get_json()``, ``.get_xml()`` and ``.get_csv()``
+methods.
+
+Note that the ``save_as`` argument must be set to a file name with the correct extension;
+that is, ``.json`` for JSON data, ``.xml`` for XML data, and ``.csv`` for CSV data. It is
+assumed that the directory in which you wish to save the file already exists.
+
+You may use relative or absolute paths.
+
+.. code-block:: python
+
+    path = "data.csv"
+
+    api.get_csv(save_as="some_existing_directory/data.csv")
+
+
+This will create a file entitled ``data.csv`` under ``some_existing_directory``. The
+contents of the file would be as follows:
+
+::
+
+    date,areaName,areaCode,newCasesByPublishDate,cumCasesByPublishDate,newDeathsByDeathDate,cumDeathsByDeathDate
+    2020-07-28,England,E92000001,547,259022,,
+    2020-07-28,Northern Ireland,N92000002,9,5921,,
+    2020-07-28,Scotland,S92000003,4,18558,,
+    2020-07-28,Wales,W92000004,21,17191,,
+
+
+Set the ``as_string`` input argument to ``True`` for the ``.get_json()`` method if you
+wish to receive the result as a JSON string instead of a ``dict`` object:
+
+.. code-block:: python
+
+    data = api.get_json(as_string=True)
+    print(data)
+
+::
+
+    {"data":[{"date":"2020-07-28","areaName":"England","areaCode":"E92000001","newCasesByPublishDate":547,"cumCasesByPublishDate":259022,"newDeathsByDeathDate":null,"cumDeathsByDeathDate":null},{"date":"2020-07-28","areaName":"Northern Ireland","areaCode":"N92000002","newCasesByPublishDate":9,"cumCasesByPublishDate":5921,"newDeathsByDeathDate":null,"cumDeathsByDeathDate":null},{"date":"2020-07-28","areaName":"Scotland","areaCode":"S92000003","newCasesByPublishDate":4,"cumCasesByPublishDate":18558,"newDeathsByDeathDate":null,"cumDeathsByDeathDate":null},{"date":"2020-07-28","areaName":"Wales","areaCode":"W92000004","newCasesByPublishDate":21,"cumCasesByPublishDate":17191,"newDeathsByDeathDate":null,"cumDeathsByDeathDate":null}],"lastUpdate":"2020-07-28T15:34:31.000000Z","length":4,"totalPages":1}
+
 
 
 -----------
