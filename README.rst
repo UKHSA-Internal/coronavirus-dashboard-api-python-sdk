@@ -34,6 +34,7 @@ To install, please run:
 and import it in Python as follows:
 
 .. code-block:: python
+
     from uk_covid19 import Cov19API
 
 
@@ -100,6 +101,7 @@ You may also use ``data.get_xml()`` or ``data.get_csv()`` to download the data i
 available formats.
 
 ::
+
     {
         'data': [
             {
@@ -141,6 +143,7 @@ To see the timestamp for the last update, run:
 To get the latest data by a specific metric, run:
 
 .. code-block:: python
+
     all_nations = [
         "areaType=nation"
     ]
@@ -156,6 +159,7 @@ To get the latest data by a specific metric, run:
     print(data)
 
 ::
+
     {
         "data": [
             {
