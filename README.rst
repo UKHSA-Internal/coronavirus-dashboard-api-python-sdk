@@ -92,6 +92,7 @@ In its simplest form, we construct the structure as follows:
 Now, we may use ``filters`` and ``structure`` to initialise the ``Covid19API`` object:
 
 .. code-block:: python
+
     api = Cov19API(filters=england_only, structure=cases_and_deaths)
     data = api.get_json()  # Returns a dictionary
     print(data)
