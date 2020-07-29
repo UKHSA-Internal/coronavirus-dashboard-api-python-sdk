@@ -376,6 +376,11 @@ class Cov19API:
         """
         Provides full data (all pages) in CSV.
 
+        .. warning::
+            Please make sure that the ``structure`` is not hierarchical as
+            CSV outputs are defined as 2D tables and as such, do not support
+            hierarchies.
+
         Parameters
         ----------
         save_as: Union[str, None]
@@ -407,6 +412,19 @@ class Cov19API:
         East Midlands,0
         ...
         """
+        # Checks to ensure that the structure is
+        # not hierarchical.
+        if isinstance(self.structure, dict):
+            non_str = filter(
+                lambda val: not isinstance(val, str),
+                self.structure.values()
+            )
+
+            if list(non_str):
+                struct = dumps(self.structure, indent=4)
+                raise ValueError("CSV structure cannot be nested. Received:\n%s" % struct)
+
+        linebreak = "\n"
         resp = str()
 
         for page_num, response in enumerate(self._get("csv"), start=1):
@@ -415,10 +433,10 @@ class Cov19API:
             # Removing CSV header (column names) where page
             # number is greater than 1.
             if page_num > 1:
-                data_lines = decoded_content.split("\n")[1:]
-                decoded_content = str.join("\n", data_lines)
+                data_lines = decoded_content.split(linebreak)[1:]
+                decoded_content = str.join(linebreak, data_lines)
 
-            resp += decoded_content.strip() + "\n"
+            resp += decoded_content.strip() + linebreak
 
         if save_as is None:
             return resp
