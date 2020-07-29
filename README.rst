@@ -137,6 +137,7 @@ To see the timestamp for the last update, run:
     print(api.last_update)
 
 ::
+
     2020-07-28T15:34:31.000000Z
 
 
