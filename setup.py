@@ -79,6 +79,7 @@ setup(
     description=metadata.get('description'),
     include_package_data=True,
     long_description=readme(),
+    long_description_content_type='text/x-rst',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
