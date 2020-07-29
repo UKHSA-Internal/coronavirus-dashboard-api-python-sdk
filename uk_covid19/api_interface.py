@@ -234,7 +234,7 @@ class Cov19API:
 
             api_params["page"] += 1
 
-    def get_json(self, save_as: Union[str, None] = None) -> dict:
+    def get_json(self, save_as: Union[str, None] = None, as_string: bool = False) -> Union[dict, str]:
         """
         Provides full data (all pages) in JSON.
 
@@ -247,9 +247,13 @@ class Cov19API:
             The value must be a path to a file with the correct
             extension -- i.e. ``.json`` for JSON).
 
+        as_string: bool
+            If ``False`` (default), returns the data as a dictionary.
+            Otherwise, returns the data as a JSON string.
+
         Returns
         -------
-        Dict
+        Union[Dict, str]
 
         Examples
         --------
@@ -286,6 +290,9 @@ class Cov19API:
 
         data = dumps(resp, separators=(",", ":"))
         save_data(data, save_as, "json")
+
+        if as_string:
+            return dumps(resp, separators=(",", ":"))
 
         return resp
 
