@@ -367,7 +367,7 @@ class Cov19API:
 
         from xml.etree.ElementTree import tostring
 
-        data = tostring(resp, encoding='unicode', method='xml', xml_declaration=True)
+        data = tostring(resp, encoding='unicode', method='xml')
         save_data(data, save_as, "xml")
 
         return resp
