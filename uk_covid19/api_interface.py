@@ -11,9 +11,10 @@ from xml.etree.ElementTree import Element as XMLElement
 
 # 3rd party:
 from requests import request, Response
+import certifi
 
 # Internal:
-from .utils import save_data
+from uk_covid19.utils import save_data
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -32,7 +33,6 @@ class Cov19API:
     ------------
     Interface to access the API service for COVID-19 data in the United Kingdom.
     """
-
     endpoint = "https://api.coronavirus.data.gov.uk/v1/data"
     _valid_formats = [
         "csv",
@@ -163,7 +163,8 @@ class Cov19API:
         """
         api_params = self.api_params
 
-        with request("HEAD", self.endpoint, params=api_params) as response:
+        with request("HEAD", self.endpoint, params=api_params,
+                     verify=certifi.where()) as response:
             response.raise_for_status()
             return response.headers
 
@@ -189,7 +190,7 @@ class Cov19API:
           ...
         }
         """
-        with request("OPTIONS", Cov19API.endpoint) as response:
+        with request("OPTIONS", Cov19API.endpoint, verify=certifi.where()) as response:
             response.raise_for_status()
             return response.json()
 
@@ -220,21 +221,22 @@ class Cov19API:
         })
 
         while True:
-            response = request("GET", self.endpoint, params=api_params)
+            with request("GET", self.endpoint, params=api_params,
+                         verify=certifi.where()) as response:
+                if response.status_code >= HTTPStatus.BAD_REQUEST:
+                    raise RuntimeError(f'Request failed: {response.text}')
+                if response.status_code == HTTPStatus.NO_CONTENT:
+                    self.total_pages = api_params["page"] - 1
+                    break
 
-            if response.status_code >= HTTPStatus.BAD_REQUEST:
-                raise RuntimeError(f'Request failed: {response.text}')
-            elif response.status_code == HTTPStatus.NO_CONTENT:
-                self.total_pages = api_params["page"] - 1
-                break
+                self._last_update = response.headers["Last-Modified"]
 
-            self._last_update = response.headers["Last-Modified"]
-
-            yield response
+                yield response
 
             api_params["page"] += 1
 
-    def get_json(self, save_as: Union[str, None] = None, as_string: bool = False) -> Union[dict, str]:
+    def get_json(self, save_as: Union[str, None] = None,
+                 as_string: bool = False) -> Union[dict, str]:
         """
         Provides full data (all pages) in JSON.
 
@@ -446,7 +448,7 @@ class Cov19API:
         return resp
 
     def __str__(self):
-        resp = "COVID-19 API\nCurrent parameters: \n"
+        resp = "COVID-19 in the UK - API Service\nCurrent parameters: \n"
         return resp + dumps(self.api_params, indent=4)
 
     __repr__ = __str__
