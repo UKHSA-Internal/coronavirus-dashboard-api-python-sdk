@@ -1,7 +1,7 @@
 Coronavirus (COVID-19) in the UK - API Service
 ==============================================
 
-|PyPi_Version| |PyPi_Status| |Format| |Supported_versions_of_Python| |License|
+|PyPi_Version| |PyPi_Status| |Format| |Supported_versions_of_Python| |lgtm| |License|
 
 
 Software Development Kit (SDK)
@@ -268,3 +268,4 @@ Copyright (c) 2020, Public Health England.
 .. |Format| image:: https://img.shields.io/pypi/format/uk-covid19
 .. |Supported_versions_of_Python| image:: https://img.shields.io/pypi/pyversions/uk-covid19
 .. |License| image:: https://img.shields.io/github/license/publichealthengland/coronavirus-dashboard-api-python-sdk
+.. |lgtm| image:: https://img.shields.io/lgtm/grade/python/github/publichealthengland/coronavirus-dashboard-api-python-sdk
