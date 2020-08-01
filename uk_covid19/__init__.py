@@ -33,7 +33,7 @@ __author__ = "Pouria Hadjibagheri"
 __copyright__ = "Copyright (c) 2020, Public Health England"
 __description__ = "SDK for the COVID-19 API (Coronavirus Dashboard in the UK)"
 __license__ = "MIT"
-__version__ = "1.1.3"
+__version__ = "1.1.4"
 __url__ = "https://coronavirus.data.gov.uk/"
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
