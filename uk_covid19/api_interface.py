@@ -287,14 +287,14 @@ class Cov19API:
         resp["length"] = len(resp["data"])
         resp["totalPages"] = self.total_pages
 
+        if as_string:
+            return dumps(resp, separators=(",", ":"))
+
         if save_as is None:
             return resp
 
         data = dumps(resp, separators=(",", ":"))
         save_data(data, save_as, "json")
-
-        if as_string:
-            return dumps(resp, separators=(",", ":"))
 
         return resp
 
