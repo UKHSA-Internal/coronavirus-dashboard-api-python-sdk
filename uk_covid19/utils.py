@@ -49,7 +49,7 @@ def save_data(data: str, path: str, ext: str) -> NoReturn:
         raise ValueError(
             "The path does not end with the correct extension "
             f"for this format. Expected a file ending with '.{ext}', "
-            f"got '.{current_ext}' instead."
+            f"got '{current_ext}' instead."
         )
 
     abs_path = os_path.abspath(path)
