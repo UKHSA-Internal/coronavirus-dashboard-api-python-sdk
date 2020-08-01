@@ -298,7 +298,7 @@ class Cov19API:
 
         return resp
 
-    def get_xml(self, save_as=None) -> XMLElement:
+    def get_xml(self, save_as=None, as_string=False) -> XMLElement:
         """
         Provides full data (all pages) in XML.
 
@@ -310,6 +310,10 @@ class Cov19API:
 
             The value must be a path to a file with the correct
             extension -- i.e. ``.xml`` for XML).
+
+        as_string: bool
+            If ``False`` (default), returns an ``ElementTree``
+            object. Otherwise, returns the data as an XML string.
 
         Returns
         -------
@@ -364,13 +368,17 @@ class Cov19API:
             elm = SubElement(resp, elm_name)
             elm.text = str(value)
 
-        if save_as is None:
+        if save_as is None and not as_string:
             return resp
 
         from xml.etree.ElementTree import tostring
 
-        data = tostring(resp, encoding='unicode', method='xml')
-        save_data(data, save_as, "xml")
+        str_data = tostring(resp, encoding='unicode', method='xml')
+
+        if as_string:
+            return str_data
+
+        save_data(str_data, save_as, "xml")
 
         return resp
 
