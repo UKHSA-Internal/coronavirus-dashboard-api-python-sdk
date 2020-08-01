@@ -101,5 +101,7 @@ setup(
         'UK England Wales Scotland Northern_Ireland United_Kingdom'
     ),
     install_requires=get_requirements(),
-    python_requires='>=3.7'
+    python_requires='>=3.7',
+    tests_require=["pytest"],
+    test_suite='tests'
 )
