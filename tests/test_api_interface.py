@@ -171,3 +171,11 @@ class TestCov9Api(TestCase):
             file_data = pointer.read().strip()
 
         self.assertEqual(data.strip(), file_data)
+
+    def test_length_equal(self):
+        csv_len = len(self.api.get_csv().strip().split("\n")[1:])
+        json_len = self.api.get_json()["length"]
+        xml_len = int(self.api.get_xml().find(".//length").text)
+
+        self.assertTrue(csv_len == json_len)
+        self.assertTrue(csv_len == xml_len)
