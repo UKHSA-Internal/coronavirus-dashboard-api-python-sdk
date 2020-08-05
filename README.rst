@@ -82,13 +82,13 @@ In its simplest form, we construct the structure as follows:
 .. code-block:: python
 
     cases_and_deaths = {
-        "date":"date",
-        "areaName":"areaName",
-        "areaCode":"areaCode",
-        "newCasesByPublishDate":"newCasesByPublishDate",
-        "cumCasesByPublishDate":"cumCasesByPublishDate",
-        "newDeathsByDeathDate":"newDeathsByDeathDate",
-        "cumDeathsByDeathDate":"cumDeathsByDeathDate"
+        "date": "date",
+        "areaName": "areaName",
+        "areaCode": "areaCode",
+        "newCasesByPublishDate": "newCasesByPublishDate",
+        "cumCasesByPublishDate": "cumCasesByPublishDate",
+        "newDeathsByDeathDate": "newDeathsByDeathDate",
+        "cumDeathsByDeathDate": "cumDeathsByDeathDate"
     }
 
 
@@ -261,7 +261,7 @@ Copyright (c) 2020, Public Health England.
 
 
 .. _`Coronavirus (COVID-19) in the UK`: http://coronavirus.data.gov.uk/
-.. _`Public Health England`: http://coronavirus.data.gov.uk/
+.. _`Public Health England`: https://www.gov.uk/government/organisations/public-health-england
 
 .. |PyPi_Version| image:: https://img.shields.io/pypi/v/uk-covid19
 .. |PyPi_Status| image:: https://img.shields.io/pypi/status/uk-covid19
