@@ -15,6 +15,7 @@ import certifi
 
 # Internal:
 from uk_covid19.utils import save_data
+from uk_covid19.exceptions import FailedRequestError
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -224,7 +225,8 @@ class Cov19API:
             with request("GET", self.endpoint, params=api_params,
                          verify=certifi.where()) as response:
                 if response.status_code >= HTTPStatus.BAD_REQUEST:
-                    raise RuntimeError(f'Request failed: {response.text}')
+                    raise FailedRequestError(response=response, params=api_params)
+
                 if response.status_code == HTTPStatus.NO_CONTENT:
                     self.total_pages = api_params["page"] - 1
                     break

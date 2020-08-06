@@ -7,11 +7,13 @@ from unittest import TestCase
 from urllib.parse import unquote
 from tempfile import gettempdir
 from os.path import join as path_join
+import re
 
 # 3rd party:
 
 # Internal: 
 from uk_covid19 import Cov19API
+from uk_covid19.exceptions import FailedRequestError
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -179,3 +181,26 @@ class TestCov9Api(TestCase):
 
         self.assertTrue(csv_len == json_len)
         self.assertTrue(csv_len == xml_len)
+
+    def test_unsuccessful_request(self):
+        bad_structure = {
+            "name": "areaName",
+            "date": "date",
+            # Missing the trailing "Date" - making the
+            # metric name invalid.
+            "newCases": "newCasesBySpecimen"
+        }
+
+        pattern = re.compile(r"404\s-\sNot Found.*'newCasesBySpecimenDate'", re.S | re.M)
+
+        api = Cov19API(filters=test_filters, structure=bad_structure)
+
+        with self.assertRaisesRegex(FailedRequestError, pattern):
+            api.get_json()
+
+        with self.assertRaisesRegex(FailedRequestError, pattern):
+            api.get_xml()
+
+        with self.assertRaisesRegex(FailedRequestError, pattern):
+            api.get_csv()
+
