@@ -16,6 +16,8 @@ The endpoint for the data provided using this SDK is:
 
     https://api.coronavirus.data.gov.uk/v1/data
 
+The SDK is also available for `JavaScript`_ and `R`_.
+
 Pagination
 ..........
 
@@ -259,9 +261,10 @@ Developed and maintained by `Public Health England`_.
 
 Copyright (c) 2020, Public Health England.
 
-
 .. _`Coronavirus (COVID-19) in the UK`: http://coronavirus.data.gov.uk/
 .. _`Public Health England`: https://www.gov.uk/government/organisations/public-health-england
+.. _`JavaScript`: https://github.com/publichealthengland/coronavirus-dashboard-api-javascript-sdk
+.. _`R`: https://github.com/publichealthengland/coronavirus-dashboard-api-R-sdk
 
 .. |PyPi_Version| image:: https://img.shields.io/pypi/v/uk-covid19
 .. |PyPi_Status| image:: https://img.shields.io/pypi/status/uk-covid19
