@@ -35,6 +35,8 @@ class Cov19API:
     Interface to access the API service for COVID-19 data in the United Kingdom.
     """
     endpoint = "https://api.coronavirus.data.gov.uk/v1/data"
+    website_timestamp_endpoint = "https://api.coronavirus.data.gov.uk/v1/timestamp"
+
     _valid_formats = [
         "csv",
         "json",
@@ -68,14 +70,21 @@ class Cov19API:
         """
         Produces the timestamp for the last update in GMT.
 
-        Returns
-        -------
-        str
-            Timestamp, formatted as ISO-8601.
+        This property supplies the API time - i.e. the time at which the data were
+        deployed to the database. Please note that there will always be a difference
+        between this time and the timestamp that is displayed on the website, which may
+        be accessed via the ``.get_website_timestamp()`` method. The website timestamp
+        signifies the time at which the data were release to the API, and by extension
+        the website.
 
         .. note::
             The output is extracted from the header and is accurate to
             the second.
+
+        Returns
+        -------
+        str
+            Timestamp, formatted as ISO-8601.
 
         Examples
         --------
@@ -112,6 +121,51 @@ class Cov19API:
         timestamp = datetime.strptime(self._last_update, "%a, %d %b %Y %H:%M:%S GMT")
 
         return timestamp.isoformat() + ".000000Z"
+
+    @staticmethod
+    def get_website_timestamp() -> str:
+        """
+        Produces the website timestamp in GMT.
+
+        This property supplies the website timestamp - i.e. the time at which the data
+        were released to the API and by extension the website. Please note that there
+        will be a difference between this timestamp and the timestamp produced using
+        the ``last_update`` property. The latter signifies the time at which the data
+        were deployed to the database, not the time at which they were released.
+
+        .. note::
+            The output is extracted from the header and is accurate to
+            the miliseconds.
+
+        Returns
+        -------
+        str
+            Timestamp, formatted as ISO-8601.
+
+        Examples
+        --------
+        >>> website_timestamp = Cov19API.get_website_timestamp()
+        >>> print(website_timestamp)
+        2020-08-08T15:00:09.977840Z
+
+        .. warning::
+            The ISO-8601 standard requires a ``"Z"`` character to be added
+            to the end of the timestamp. This is a timezone feature and is
+            not recognised by Python's ``datetime`` library. It is, however,
+            most other libraries; e.g. ``pandas``. If you wish to parse the
+            timestamp using the the ``datetime`` library, make sure that you
+            remove the trailing ``"Z"`` character.
+
+        >>> from datetime import datetime
+        >>> website_timestamp = Cov19API.get_website_timestamp()
+        >>> parsed_timestamp = datetime.fromisoformat(website_timestamp.strip("Z"))
+        >>> print(parsed_timestamp)
+        2020-08-08 15:00:09
+        """
+        with request("GET", Cov19API.website_timestamp_endpoint) as response:
+            json_data = response.json()
+
+        return json_data['websiteTimestamp']
 
     @property
     def api_params(self) -> dict:

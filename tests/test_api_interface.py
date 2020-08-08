@@ -7,6 +7,7 @@ from unittest import TestCase
 from urllib.parse import unquote
 from tempfile import gettempdir
 from os.path import join as path_join
+from datetime import datetime
 import re
 
 # 3rd party:
@@ -204,3 +205,14 @@ class TestCov9Api(TestCase):
         with self.assertRaisesRegex(FailedRequestError, pattern):
             api.get_csv()
 
+    def test_website_timestamp(self):
+        website_timestamp = Cov19API.get_website_timestamp()
+        api_date = self.api.last_update
+        print(website_timestamp)
+        self.assertIn("Z", website_timestamp)
+        self.assertNotEqual(website_timestamp, api_date)
+
+        website_date = datetime.fromisoformat(website_timestamp.strip("Z")).date()
+        api_date = datetime.fromisoformat(api_date.strip("Z")).date()
+
+        self.assertEqual(website_date, api_date)
