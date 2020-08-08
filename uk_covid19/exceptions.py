@@ -27,7 +27,7 @@ class FailedRequestError(RuntimeError):
 Request failed .... {status_code} - {reason}
 Response .......... {response_text}
 URL ............... {url}
-Decoded URL ........{decoded_url}
+Decoded URL ....... {decoded_url}
 Parameters:
 {params}
 """
