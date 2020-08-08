@@ -8,9 +8,9 @@ Software Development Kit (SDK) for Python
 -----------------------------------------
 
 This is a Python SDK for the COVID-19 API, as published by Public Health England
-on `Coronavirus (COVID-19) in the UK`_. Libraries similar to this are also available
-for `JavaScript`_, `R`_, and `.Net`_.
+on `Coronavirus (COVID-19) in the UK`_.
 
+Similar libraries are also available for `JavaScript`_, `R`_, and `.Net`_.
 
 The API supplies the latest data for the COVID-19 outbreak in the United Kingdom. 
 
