@@ -184,13 +184,15 @@ There are two options to get the timestamp for the last update:
 - Using the ``.last_update`` property.
 - Using the ``.get_release_timestamp()`` (static) method.
 
-> Please note that the timestamp produced by the ``.last_update`` property is not the
-same as the which is produced by the ``.get_release_timestamp()`` method. The former
-supplies the API timestamp - i.e. the time at which the data were deployed to the
-database - whilst the latter supplies the time at which the data were **released** to
-the API and by extension the website. There will always be a difference lag between
-the two timestamps as the data undergo a quality assurance process before they are
-released to the API / website.
+.. note::
+
+    Please note that the timestamp produced by the ``.last_update`` property is not the
+    same as the which is produced by the ``.get_release_timestamp()`` method. The former
+    supplies the API timestamp - i.e. the time at which the data were deployed to the
+    database - whilst the latter supplies the time at which the data were **released** to
+    the API and by extension the website. There will always be a difference lag between
+    the two timestamps as the data undergo a quality assurance process before they are
+    released to the API / website.
 
 .. code-block:: python
 
@@ -232,13 +234,16 @@ released to the API / website.
 
     2020-07-28T15:00:00.431323Z
 
-Note that the ``.last_update`` timestamp is produced if and *only* if the ``Cov19API``
-object is instantiated - i.e. when specific ``filters`` and ``structure`` parameters have
-been set. On the other hand, ``.get_release_timestamp()`` is a static method and therefore
-independent of parameters. This is because the ``.last_update`` timestamp is specific to
-a set of query metrics and is extracted from the ``HEAD`` of an API request. The
-``.get_release_timestamp()`` method is, however, extracted from a static file which is
-generated a the precise moment when the data is released.
+
+.. note::
+
+    The ``.last_update`` timestamp is produced if and *only* if the ``Cov19API``
+    object is instantiated - i.e. when specific ``filters`` and ``structure`` parameters have
+    been set. On the other hand, ``.get_release_timestamp()`` is a static method and therefore
+    independent of parameters. This is because the ``.last_update`` timestamp is specific to
+    a set of query metrics and is extracted from the ``HEAD`` of an API request. The
+    ``.get_release_timestamp()`` method is, however, extracted from a static file which is
+    generated a the precise moment when the data is released.
 
 
 .. warning::
