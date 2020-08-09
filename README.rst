@@ -81,8 +81,14 @@ You can import the library into your Python script as follows:
 library in Python.
 
 
-Examples
---------
+Getting started
+---------------
+
+This section provides simple examples for the library.
+
+
+General use
+...........
 
 We would like to extract the number of new cases, cumulative cases, new deaths and
 cumulative deaths for England using the API.
@@ -170,25 +176,103 @@ available formats.
         'totalPages': 1
     }
 
+Timestamps
+..........
 
-To see the timestamp for the last update, run:
+There are two options to get the timestamp for the last update:
+
+- Using the ``.last_update`` property.
+- Using the ``.get_release_timestamp()`` (static) method.
+
+> Please note that the timestamp produced by the ``.last_update`` property is not the
+same as the which is produced by the ``.get_release_timestamp()`` method. The former
+supplies the API timestamp - i.e. the time at which the data were deployed to the
+database - whilst the latter supplies the time at which the data were **released** to
+the API and by extension the website. There will always be a difference lag between
+the two timestamps as the data undergo a quality assurance process before they are
+released to the API / website.
 
 .. code-block:: python
 
-    print(api.last_update)
+    from uk_covid19 import Cov19API
+
+    cases_and_deaths = {
+        "date": "date",
+        "areaName": "areaName",
+        "areaCode": "areaCode",
+        "newCasesByPublishDate": "newCasesByPublishDate",
+        "cumCasesByPublishDate": "cumCasesByPublishDate",
+        "newDeathsByDeathDate": "newDeathsByDeathDate",
+        "cumDeathsByDeathDate": "cumDeathsByDeathDate"
+    }
+
+    england_only = [
+        'areaType=nation',
+        'areaName=England'
+    ]
+
+    api = Cov19API(filters=england_only, structure=cases_and_deaths)
+    api_timestamp = api.last_update
+
+    print(api_timestamp)
 
 ::
 
-    2020-07-28T15:34:31.000000Z
+    2020-07-28T14:34:31.000000Z
 
+
+.. code-block:: python
+    from uk_covid19 import Cov19API
+
+    release_timestamp = Cov19API.get_release_timestamp()
+
+    print(release_timestamp)
+
+::
+
+    2020-07-28T15:00:00.431323Z
+
+Note that the ``.last_update`` timestamp is produced if and *only* if the ``Cov19API``
+object is instantiated - i.e. when specific ``filters`` and ``structure`` parameters have
+been set. On the other hand, ``.get_release_timestamp()`` is a static method and therefore
+independent of parameters. This is because the ``.last_update`` timestamp is specific to
+a set of query metrics and is extracted from the ``HEAD`` of an API request. The
+``.get_release_timestamp()`` method is, however, extracted from a static file which is
+generated a the precise moment when the data is released.
+
+
+.. warning::
+
+    It may take up to 60 seconds for the data to be updated when the *release timestamp*
+    (``.get_release_timestamp()``) is updated. This is because the cache refresh before the
+    new data becomes available. The **API timestamp** (``.last_update``), however, is only
+    updated when the cache has been refreshed. This means that you can only be certain that
+    you are receiving the most up-to-data data when the ``.last_update`` timestamp for your
+    specific parameters have been updated.
+
+
+Latest data
+...........
 
 To get the latest data by a specific metric, run:
 
 .. code-block:: python
 
+    from uk_covid19 import Cov19API
+
     all_nations = [
         "areaType=nation"
     ]
+
+    cases_and_deaths = {
+        "date": "date",
+        "areaName": "areaName",
+        "areaCode": "areaCode",
+        "newCasesByPublishDate": "newCasesByPublishDate",
+        "cumCasesByPublishDate": "cumCasesByPublishDate",
+        "newDeathsByDeathDate": "newDeathsByDeathDate",
+        "cumDeathsByDeathDate": "cumDeathsByDeathDate"
+    }
 
     api = Cov19API(
         filters=all_nations,
@@ -247,6 +331,9 @@ To get the latest data by a specific metric, run:
     }
 
 
+Saving the data
+...............
+
 Set the ``save_as`` input argument to a path to save the data in a file. This
 functionality is only available for ``.get_json()``, ``.get_xml()`` and ``.get_csv()``
 methods.
@@ -259,7 +346,27 @@ You may use relative or absolute paths.
 
 .. code-block:: python
 
-    path = "data.csv"
+    from uk_covid19 import Cov19API
+
+    all_nations = [
+        "areaType=nation"
+    ]
+
+    cases_and_deaths = {
+        "date": "date",
+        "areaName": "areaName",
+        "areaCode": "areaCode",
+        "newCasesByPublishDate": "newCasesByPublishDate",
+        "cumCasesByPublishDate": "cumCasesByPublishDate",
+        "newDeathsByDeathDate": "newDeathsByDeathDate",
+        "cumDeathsByDeathDate": "cumDeathsByDeathDate"
+    }
+
+    api = Cov19API(
+        filters=all_nations,
+        structure=cases_and_deaths,
+        latest_by="newCasesByPublishDate"
+    )
 
     api.get_csv(save_as="some_existing_directory/data.csv")
 
@@ -276,17 +383,89 @@ contents of the file would be as follows:
     2020-07-28,Wales,W92000004,21,17191,,
 
 
+Data as JSON string
+...................
+
 Set the ``as_string`` input argument to ``True`` for the ``.get_json()`` method if you
 wish to receive the result as a JSON string instead of a ``dict`` object:
 
 .. code-block:: python
 
+    from uk_covid19 import Cov19API
+
+    all_nations = [
+        "areaType=nation"
+    ]
+
+    cases_and_deaths = {
+        "date": "date",
+        "areaName": "areaName",
+        "areaCode": "areaCode",
+        "newCasesByPublishDate": "newCasesByPublishDate",
+        "cumCasesByPublishDate": "cumCasesByPublishDate",
+        "newDeathsByDeathDate": "newDeathsByDeathDate",
+        "cumDeathsByDeathDate": "cumDeathsByDeathDate"
+    }
+
+    api = Cov19API(
+        filters=all_nations,
+        structure=cases_and_deaths,
+        latest_by="newCasesByPublishDate"
+    )
+
     data = api.get_json(as_string=True)
+
     print(data)
 
 ::
 
     {"data":[{"date":"2020-07-28","areaName":"England","areaCode":"E92000001","newCasesByPublishDate":547,"cumCasesByPublishDate":259022,"newDeathsByDeathDate":null,"cumDeathsByDeathDate":null},{"date":"2020-07-28","areaName":"Northern Ireland","areaCode":"N92000002","newCasesByPublishDate":9,"cumCasesByPublishDate":5921,"newDeathsByDeathDate":null,"cumDeathsByDeathDate":null},{"date":"2020-07-28","areaName":"Scotland","areaCode":"S92000003","newCasesByPublishDate":4,"cumCasesByPublishDate":18558,"newDeathsByDeathDate":null,"cumDeathsByDeathDate":null},{"date":"2020-07-28","areaName":"Wales","areaCode":"W92000004","newCasesByPublishDate":21,"cumCasesByPublishDate":17191,"newDeathsByDeathDate":null,"cumDeathsByDeathDate":null}],"lastUpdate":"2020-07-28T15:34:31.000000Z","length":4,"totalPages":1}
+
+
+Data as Pandas DataFrame
+........................
+
+You can use the ``.get_dataframe()`` method to get the data as a Pandas DataFrame object.
+
+.. warning::
+
+    The ``pandas`` library is not included in the dependencies of this
+    library and must be installed separately.
+
+.. code-block:: python
+
+    from uk_covid19 import Cov19API
+
+    all_nations = [
+        "areaType=nation"
+    ]
+
+    cases_and_deaths = {
+        "date": "date",
+        "areaName": "areaName",
+        "areaCode": "areaCode",
+        "newCasesByPublishDate": "newCasesByPublishDate",
+        "cumCasesByPublishDate": "cumCasesByPublishDate",
+        "newDeathsByDeathDate": "newDeathsByDeathDate",
+        "cumDeathsByDeathDate": "cumDeathsByDeathDate"
+    }
+
+    api = Cov19API(
+        filters=all_nations,
+        structure=cases_and_deaths
+    )
+
+    df = api.get_dataframe()
+
+    print(df.head())
+
+::
+
+             date          areaName   areaCode  newCasesByPublishDate  cumCasesByPublishDate newDeathsByDeathDate cumDeathsByDeathDate
+    0  2020-08-08           England  E92000001                    679               267324.0                 None                 None
+    1  2020-08-08  Northern Ireland  N92000002                      0                    NaN                 None                 None
+    2  2020-08-08          Scotland  S92000003                     60                18950.0                 None                 None
+    3  2020-08-08             Wales  W92000004                     19                17425.0                 None                 None
 
 
 
