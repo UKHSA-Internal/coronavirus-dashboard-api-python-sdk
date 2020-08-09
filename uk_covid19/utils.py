@@ -7,7 +7,8 @@ from typing import NoReturn
 
 # 3rd party:
 
-# Internal: 
+# Internal:
+from uk_covid19.data_format import DataFormat
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -16,7 +17,7 @@ __all__ = [
 ]
 
 
-def save_data(data: str, path: str, ext: str) -> NoReturn:
+def save_data(data: str, path: str, ext: DataFormat) -> NoReturn:
     """
     Saves the data in a file.
 
@@ -30,12 +31,28 @@ def save_data(data: str, path: str, ext: str) -> NoReturn:
         the data is to be saved. The path must end with
         the value defined for the ``ext`` argument.
 
-    ext: str
-        Extension (type) of the file --- e.g. ``json``.
+    ext: DataFormat
+        Extension (type) of the file.
 
     Returns
     -------
     NoReturn
+
+    Raises
+    ------
+    IsADirectoryError
+        If the filename is not defined in the path.
+
+    ValueError:
+        If the filename does not end with the correct extension for
+        the requested format.
+
+    NotADirectoryError
+        If the parent directory does not exist.
+
+    PermissionError
+        If the current user does not have permission to write in
+        the directory.
     """
     from os import access, W_OK, path as os_path
 
@@ -44,11 +61,11 @@ def save_data(data: str, path: str, ext: str) -> NoReturn:
             'No file name: The log file path must define an '
             'absolute path and a filename. Currently: <{filepath}>.'
         )
-    elif not path.lower().endswith(ext.lower()):
+    elif not path.lower().endswith(ext.value):
         _, current_ext = os_path.splitext(path)
         raise ValueError(
             "The path does not end with the correct extension "
-            f"for this format. Expected a file ending with '.{ext}', "
+            f"for this format. Expected a file ending with '.{ext.value}', "
             f"got '{current_ext}' instead."
         )
 
