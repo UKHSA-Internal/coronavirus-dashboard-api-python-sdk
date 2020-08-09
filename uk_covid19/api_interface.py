@@ -76,10 +76,12 @@ class Cov19API:
         the website.
 
         .. note::
+
             The output is extracted from the header and is accurate to
             the second.
             
         .. warning::
+
             The ISO-8601 standard requires a ``"Z"`` character to be added
             to the end of the timestamp. This is a timezone feature and is
             not recognised by Python's ``datetime`` library. It is, however,
@@ -134,10 +136,12 @@ class Cov19API:
         were deployed to the database, not the time at which they were released.
 
         .. note::
+
             The output is extracted from the header and is accurate to
             the miliseconds.
 
         .. warning::
+
             The ISO-8601 standard requires a ``"Z"`` character to be added
             to the end of the timestamp. This is a timezone feature and is
             not recognised by Python's ``datetime`` library. It is, however,
@@ -447,6 +451,7 @@ class Cov19API:
         Provides full data (all pages) in CSV.
 
         .. warning::
+
             Please make sure that the ``structure`` is not hierarchical as
             CSV outputs are defined as 2D tables and as such, do not support
             hierarchies.
@@ -525,6 +530,7 @@ class Cov19API:
         Provides the data as as ``pandas.DataFrame`` object.
 
         .. warning::
+
             The ``pandas`` library is not included in the dependencies of this
             library and must be installed separately.
 
