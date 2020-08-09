@@ -36,7 +36,7 @@ class Cov19API:
     Interface to access the API service for COVID-19 data in the United Kingdom.
     """
     endpoint = "https://api.coronavirus.data.gov.uk/v1/data"
-    website_timestamp_endpoint = "https://api.coronavirus.data.gov.uk/v1/timestamp"
+    release_timestamp_endpoint = "https://api.coronavirus.data.gov.uk/v1/timestamp"
 
     _last_update: Union[str, None] = None
     total_pages: Union[int, None] = None
@@ -71,13 +71,21 @@ class Cov19API:
         This property supplies the API time - i.e. the time at which the data were
         deployed to the database. Please note that there will always be a difference
         between this time and the timestamp that is displayed on the website, which may
-        be accessed via the ``.get_website_timestamp()`` method. The website timestamp
+        be accessed via the ``.get_release_timestamp()`` method. The website timestamp
         signifies the time at which the data were release to the API, and by extension
         the website.
 
         .. note::
             The output is extracted from the header and is accurate to
             the second.
+            
+        .. warning::
+            The ISO-8601 standard requires a ``"Z"`` character to be added
+            to the end of the timestamp. This is a timezone feature and is
+            not recognised by Python's ``datetime`` library. It is, however,
+            most other libraries; e.g. ``pandas``. If you wish to parse the
+            timestamp using the the ``datetime`` library, make sure that you
+            remove the trailing ``"Z"`` character.
 
         Returns
         -------
@@ -100,14 +108,6 @@ class Cov19API:
         >>> print(timestamp)
         2020-07-27T20:29:16.000000Z
 
-        .. warning::
-            The ISO-8601 standard requires a ``"Z"`` character to be added
-            to the end of the timestamp. This is a timezone feature and is
-            not recognised by Python's ``datetime`` library. It is, however,
-            most other libraries; e.g. ``pandas``. If you wish to parse the
-            timestamp using the the ``datetime`` library, make sure that you
-            remove the trailing ``"Z"`` character.
-
         >>> from datetime import datetime
         >>> parsed_timestamp = datetime.fromisoformat(timestamp.strip("Z"))
         >>> print(parsed_timestamp)
@@ -121,7 +121,7 @@ class Cov19API:
         return timestamp.isoformat() + ".000000Z"
 
     @staticmethod
-    def get_website_timestamp() -> str:
+    def get_release_timestamp() -> str:
         """
         :staticmethod:
 
@@ -137,17 +137,6 @@ class Cov19API:
             The output is extracted from the header and is accurate to
             the miliseconds.
 
-        Returns
-        -------
-        str
-            Timestamp, formatted as ISO-8601.
-
-        Examples
-        --------
-        >>> website_timestamp = Cov19API.get_website_timestamp()
-        >>> print(website_timestamp)
-        2020-08-08T15:00:09.977840Z
-
         .. warning::
             The ISO-8601 standard requires a ``"Z"`` character to be added
             to the end of the timestamp. This is a timezone feature and is
@@ -155,14 +144,25 @@ class Cov19API:
             most other libraries; e.g. ``pandas``. If you wish to parse the
             timestamp using the the ``datetime`` library, make sure that you
             remove the trailing ``"Z"`` character.
+            
+        Returns
+        -------
+        str
+            Timestamp, formatted as ISO-8601.
+
+        Examples
+        --------
+        >>> release_timestamp = Cov19API.get_release_timestamp()
+        >>> print(release_timestamp)
+        2020-08-08T15:00:09.977840Z
 
         >>> from datetime import datetime
-        >>> website_timestamp = Cov19API.get_website_timestamp()
-        >>> parsed_timestamp = datetime.fromisoformat(website_timestamp.strip("Z"))
+        >>> release_timestamp = Cov19API.get_release_timestamp()
+        >>> parsed_timestamp = datetime.fromisoformat(release_timestamp.strip("Z"))
         >>> print(parsed_timestamp)
         2020-08-08 15:00:09
         """
-        with request("GET", Cov19API.website_timestamp_endpoint) as response:
+        with request("GET", Cov19API.release_timestamp_endpoint) as response:
             json_data = response.json()
 
         return json_data['websiteTimestamp']

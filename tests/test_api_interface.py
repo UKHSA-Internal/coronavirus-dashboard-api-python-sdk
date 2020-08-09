@@ -206,13 +206,13 @@ class TestCov9Api(TestCase):
             api.get_csv()
 
     def test_website_timestamp(self):
-        website_timestamp = Cov19API.get_website_timestamp()
+        release_timestamp = Cov19API.get_release_timestamp()
         api_date = self.api.last_update
 
-        self.assertIn("Z", website_timestamp)
-        self.assertNotEqual(website_timestamp, api_date)
+        self.assertIn("Z", release_timestamp)
+        self.assertNotEqual(release_timestamp, api_date)
 
-        website_date = datetime.fromisoformat(website_timestamp.strip("Z")).date()
+        website_date = datetime.fromisoformat(release_timestamp.strip("Z")).date()
         api_date = datetime.fromisoformat(api_date.strip("Z")).date()
 
         self.assertEqual(website_date, api_date)
