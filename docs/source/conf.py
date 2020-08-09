@@ -13,12 +13,13 @@
 from os import path
 import sys
 from datetime import datetime
-from re import compile as re_compile, MULTILINE
 
 doc_paths = path.dirname(path.abspath(__file__))
 package_dir = path.abspath(path.join(doc_paths, path.pardir, path.pardir))
 
 sys.path.insert(0, package_dir)
+
+from uk_covid19 import __version__ as release
 
 
 # -- Project information -----------------------------------------------------
@@ -38,7 +39,8 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinx_rtd_theme'
+    'sphinx.ext.napoleon',
+    'sphinx_rtd_theme',
 ]
 
 
@@ -62,20 +64,5 @@ pygments_style = 'sphinx'
 html_theme = "sphinx_rtd_theme"
 
 
-
-# sphinxcontrib-srclinks extension settings:
-edit_on_github_project = 'publichealthengland/coronavirus-dashboard-api-python-sdk'
-edit_on_github_branch = 'master'
-
-init_file = path.abspath(path.join(package_dir, '__init__.py'))
-pattern = re_compile(r"^__version__.+[\'\"](?P<version>(.+))[\'\"][.\n]?$", MULTILINE)
-
-with open(init_file, mode='r') as dt:
-    found = pattern.search(dt.read())
-    if found:
-        _version = found.group('version')
-
-        version = str.join('.', _version.split('.')[:2])
-
-        # The full version, including alpha/beta/rc tags.
-        release = _version
+with open("../version", "w") as file:
+    print(release, file=file)
