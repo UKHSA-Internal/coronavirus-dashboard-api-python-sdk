@@ -63,6 +63,7 @@ pygments_style = 'sphinx'
 #
 html_theme = "sphinx_rtd_theme"
 
+build_dir = path.abspath(path.join(doc_paths, path.pardir, "build"))
 
-with open("../version", "w") as file:
+with open(path.join(build_dir, "version"), "w") as file:
     print(release, file=file)
