@@ -208,7 +208,7 @@ class TestCov9Api(TestCase):
     def test_website_timestamp(self):
         website_timestamp = Cov19API.get_website_timestamp()
         api_date = self.api.last_update
-        print(website_timestamp)
+
         self.assertIn("Z", website_timestamp)
         self.assertNotEqual(website_timestamp, api_date)
 
@@ -216,3 +216,12 @@ class TestCov9Api(TestCase):
         api_date = datetime.fromisoformat(api_date.strip("Z")).date()
 
         self.assertEqual(website_date, api_date)
+
+    def test_as_dataframe(self):
+        from pandas import DataFrame
+
+        df = self.api.get_dataframe()
+
+        self.assertIsInstance(df, DataFrame)
+        self.assertEqual(df.columns.size, 3)
+        self.assertGreater(df.index.size, 10)

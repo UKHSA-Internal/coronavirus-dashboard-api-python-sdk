@@ -15,6 +15,7 @@ import certifi
 
 # Internal:
 from uk_covid19.utils import save_data
+from uk_covid19.data_format import DataFormat
 from uk_covid19.exceptions import FailedRequestError
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,11 +38,6 @@ class Cov19API:
     endpoint = "https://api.coronavirus.data.gov.uk/v1/data"
     website_timestamp_endpoint = "https://api.coronavirus.data.gov.uk/v1/timestamp"
 
-    _valid_formats = [
-        "csv",
-        "json",
-        "xml"
-    ]
     _last_update: Union[str, None] = None
     total_pages: Union[int, None] = None
 
@@ -68,6 +64,8 @@ class Cov19API:
     @property
     def last_update(self) -> str:
         """
+        :property:
+
         Produces the timestamp for the last update in GMT.
 
         This property supplies the API time - i.e. the time at which the data were
@@ -125,6 +123,8 @@ class Cov19API:
     @staticmethod
     def get_website_timestamp() -> str:
         """
+        :staticmethod:
+
         Produces the website timestamp in GMT.
 
         This property supplies the website timestamp - i.e. the time at which the data
@@ -170,6 +170,8 @@ class Cov19API:
     @property
     def api_params(self) -> dict:
         """
+        :staticmethod:
+
         API parameters, constructed based on ``filters``, ``structure``,
         and ``latest_by`` arguments as defined by the user.
 
@@ -226,6 +228,8 @@ class Cov19API:
     @staticmethod
     def options():
         """
+        :staticmethod:
+
         Provides the options by calling the ``OPTIONS`` method of the API.
 
         Returns
@@ -249,7 +253,7 @@ class Cov19API:
             response.raise_for_status()
             return response.json()
 
-    def _get(self, format_as: str) -> Iterator[Response]:
+    def _get(self, format_as: DataFormat) -> Iterator[Response]:
         """
         Extracts paginated data by requesting all of the pages
         and combining the results.
@@ -257,21 +261,21 @@ class Cov19API:
         Parameters
         ----------
         format_as: str
-            Response format - Must be one of ``"json"``, ``"xml"``, or ``"csv"``.
+            Response format.
 
         Returns
         -------
         Iterator[Response]
-        """
-        if format_as not in self._valid_formats:
-            raise ValueError(
-                f"`format_as` must be one of '{str.join(', ', self._valid_formats)}'"
-            )
 
+        Raises
+        ------
+        FailedRequestError
+            When the request fails.
+        """
         api_params = self.api_params
 
         api_params.update({
-            "format": format_as,
+            "format": format_as.value,
             "page": 1
         })
 
@@ -333,7 +337,7 @@ class Cov19API:
             "data": list()
         }
 
-        for response in self._get("json"):
+        for response in self._get(DataFormat.JSON):
             current_data = response.json()
             page_data = current_data['data']
 
@@ -350,7 +354,7 @@ class Cov19API:
             return resp
 
         data = dumps(resp, separators=(",", ":"))
-        save_data(data, save_as, "json")
+        save_data(data, save_as, DataFormat.JSON)
 
         return resp
 
@@ -403,7 +407,7 @@ class Cov19API:
 
         resp = XMLElement("document")
 
-        for response in self._get("xml"):
+        for response in self._get(DataFormat.XML):
             decoded_content = response.content.decode()
 
             # Parsing the XML:
@@ -434,7 +438,7 @@ class Cov19API:
         if as_string:
             return str_data
 
-        save_data(str_data, save_as, "xml")
+        save_data(str_data, save_as, DataFormat.XML)
 
         return resp
 
@@ -459,6 +463,11 @@ class Cov19API:
         Returns
         -------
         str
+
+        Raises
+        ------
+        ValueError
+            If the structure is nested.
 
         Examples
         --------
@@ -493,7 +502,7 @@ class Cov19API:
         linebreak = "\n"
         resp = str()
 
-        for page_num, response in enumerate(self._get("csv"), start=1):
+        for page_num, response in enumerate(self._get(DataFormat.CSV), start=1):
             decoded_content = response.content.decode()
 
             # Removing CSV header (column names) where page
@@ -507,9 +516,39 @@ class Cov19API:
         if save_as is None:
             return resp
 
-        save_data(resp, save_as, "csv")
+        save_data(resp, save_as, DataFormat.CSV)
 
         return resp
+
+    def get_dataframe(self):
+        """
+        Provides the data as as ``pandas.DataFrame`` object.
+
+        .. warning::
+            The ``pandas`` library is not included in the dependencies of this
+            library and must be installed separately.
+
+        Returns
+        -------
+        DataFrame
+
+        Raises
+        ------
+        ImportError
+            If the ``pandas`` library is not installed.
+        """
+        try:
+            from pandas import DataFrame
+        except ImportError:
+            raise ImportError(
+                "The `pandas` library is not installed as a part of the `uk-covid19` "
+                "library. Please install the library and try again."
+            )
+
+        data = self.get_json()
+        df = DataFrame(data["data"])
+
+        return df
 
     def __str__(self):
         resp = "COVID-19 in the UK - API Service\nCurrent parameters: \n"
