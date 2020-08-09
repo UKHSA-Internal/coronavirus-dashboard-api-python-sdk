@@ -1,0 +1,771 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>uk_covid19.api_interface &mdash; uk-covid19  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> uk-covid19
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../uk_covid19/uk_covid19.html">Coronavirus Dashboard API: Python SDK</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">uk-covid19</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>uk_covid19.api_interface</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for uk_covid19.api_interface</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin python3</span>
+
+<span class="c1"># Imports</span>
+<span class="c1"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="c1"># Python:</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Iterator</span>
+<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dumps</span>
+<span class="kn">from</span> <span class="nn">http</span> <span class="kn">import</span> <span class="n">HTTPStatus</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">xml.etree.ElementTree</span> <span class="kn">import</span> <span class="n">Element</span> <span class="k">as</span> <span class="n">XMLElement</span>
+
+<span class="c1"># 3rd party:</span>
+<span class="kn">from</span> <span class="nn">requests</span> <span class="kn">import</span> <span class="n">request</span><span class="p">,</span> <span class="n">Response</span>
+<span class="kn">import</span> <span class="nn">certifi</span>
+
+<span class="c1"># Internal:</span>
+<span class="kn">from</span> <span class="nn">uk_covid19.utils</span> <span class="kn">import</span> <span class="n">save_data</span>
+<span class="kn">from</span> <span class="nn">uk_covid19.data_format</span> <span class="kn">import</span> <span class="n">DataFormat</span>
+<span class="kn">from</span> <span class="nn">uk_covid19.exceptions</span> <span class="kn">import</span> <span class="n">FailedRequestError</span>
+
+<span class="c1"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;Cov19API&#39;</span>
+<span class="p">]</span>
+
+
+<span class="n">StructureType</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+<span class="n">FiltersType</span> <span class="o">=</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Cov19API"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API">[docs]</a><span class="k">class</span> <span class="nc">Cov19API</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    COVID-19 API</span>
+<span class="sd">    ------------</span>
+<span class="sd">    Interface to access the API service for COVID-19 data in the United Kingdom.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://api.coronavirus.data.gov.uk/v1/data&quot;</span>
+    <span class="n">release_timestamp_endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://api.coronavirus.data.gov.uk/v1/timestamp&quot;</span>
+
+    <span class="n">_last_update</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">total_pages</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="n">FiltersType</span><span class="p">,</span> <span class="n">structure</span><span class="p">:</span> <span class="n">StructureType</span><span class="p">,</span>
+                 <span class="n">latest_by</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filters: Iterable[str]</span>
+<span class="sd">            API filters. See the API documentations for additional</span>
+<span class="sd">            information.</span>
+
+<span class="sd">        structure: Dict[str, Union[dict, str]]</span>
+<span class="sd">            Structure parameter. See the API documentations for</span>
+<span class="sd">            additional information.</span>
+
+<span class="sd">        latest_by: Union[str, None]</span>
+<span class="sd">            Retrieves the latest value for a specific metric. [Default: ``None``]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="n">filters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_by</span> <span class="o">=</span> <span class="n">latest_by</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">last_update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :property:</span>
+
+<span class="sd">        Produces the timestamp for the last update in GMT.</span>
+
+<span class="sd">        This property supplies the API time - i.e. the time at which the data were</span>
+<span class="sd">        deployed to the database. Please note that there will always be a difference</span>
+<span class="sd">        between this time and the timestamp that is displayed on the website, which may</span>
+<span class="sd">        be accessed via the ``.get_release_timestamp()`` method. The website timestamp</span>
+<span class="sd">        signifies the time at which the data were release to the API, and by extension</span>
+<span class="sd">        the website.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            The output is extracted from the header and is accurate to</span>
+<span class="sd">            the second.</span>
+<span class="sd">            </span>
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            The ISO-8601 standard requires a ``&quot;Z&quot;`` character to be added</span>
+<span class="sd">            to the end of the timestamp. This is a timezone feature and is</span>
+<span class="sd">            not recognised by Python&#39;s ``datetime`` library. It is, however,</span>
+<span class="sd">            most other libraries; e.g. ``pandas``. If you wish to parse the</span>
+<span class="sd">            timestamp using the the ``datetime`` library, make sure that you</span>
+<span class="sd">            remove the trailing ``&quot;Z&quot;`` character.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            Timestamp, formatted as ISO-8601.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; filters = [&quot;areaType=region&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; structure = {</span>
+<span class="sd">        ...     &quot;name&quot;: &quot;areaName&quot;,</span>
+<span class="sd">        ...     &quot;newCases&quot;: &quot;newCasesBySpecimenDate&quot;</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; data = Cov19API(</span>
+<span class="sd">        ...     filters=filters,</span>
+<span class="sd">        ...     structure=structure,</span>
+<span class="sd">        ...     latest_by=&#39;newCasesBySpecimenDate&#39;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; timestamp = data.last_update</span>
+<span class="sd">        &gt;&gt;&gt; print(timestamp)</span>
+<span class="sd">        2020-07-27T20:29:16.000000Z</span>
+
+<span class="sd">        &gt;&gt;&gt; from datetime import datetime</span>
+<span class="sd">        &gt;&gt;&gt; parsed_timestamp = datetime.fromisoformat(timestamp.strip(&quot;Z&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; print(parsed_timestamp)</span>
+<span class="sd">        2020-07-27 20:29:16</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_update</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_update</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">()[</span><span class="s1">&#39;Last-Modified&#39;</span><span class="p">]</span>
+
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_update</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%a</span><span class="s2">, </span><span class="si">%d</span><span class="s2"> %b %Y %H:%M:%S GMT&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;.000000Z&quot;</span>
+
+<div class="viewcode-block" id="Cov19API.get_release_timestamp"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.get_release_timestamp">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_release_timestamp</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :staticmethod:</span>
+
+<span class="sd">        Produces the website timestamp in GMT.</span>
+
+<span class="sd">        .. versionadded:: 1.2.0</span>
+
+<span class="sd">        This property supplies the website timestamp - i.e. the time at which the data</span>
+<span class="sd">        were released to the API and by extension the website. Please note that there</span>
+<span class="sd">        will be a difference between this timestamp and the timestamp produced using</span>
+<span class="sd">        the ``last_update`` property. The latter signifies the time at which the data</span>
+<span class="sd">        were deployed to the database, not the time at which they were released.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            The output is extracted from the header and is accurate to</span>
+<span class="sd">            the miliseconds.</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            The ISO-8601 standard requires a ``&quot;Z&quot;`` character to be added</span>
+<span class="sd">            to the end of the timestamp. This is a timezone feature and is</span>
+<span class="sd">            not recognised by Python&#39;s ``datetime`` library. It is, however,</span>
+<span class="sd">            most other libraries; e.g. ``pandas``. If you wish to parse the</span>
+<span class="sd">            timestamp using the the ``datetime`` library, make sure that you</span>
+<span class="sd">            remove the trailing ``&quot;Z&quot;`` character.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            Timestamp, formatted as ISO-8601.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; release_timestamp = Cov19API.get_release_timestamp()</span>
+<span class="sd">        &gt;&gt;&gt; print(release_timestamp)</span>
+<span class="sd">        2020-08-08T15:00:09.977840Z</span>
+
+<span class="sd">        &gt;&gt;&gt; from datetime import datetime</span>
+<span class="sd">        &gt;&gt;&gt; release_timestamp = Cov19API.get_release_timestamp()</span>
+<span class="sd">        &gt;&gt;&gt; parsed_timestamp = datetime.fromisoformat(release_timestamp.strip(&quot;Z&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; print(parsed_timestamp)</span>
+<span class="sd">        2020-08-08 15:00:09</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">request</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">Cov19API</span><span class="o">.</span><span class="n">release_timestamp_endpoint</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;websiteTimestamp&#39;</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">api_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :staticmethod:</span>
+
+<span class="sd">        API parameters, constructed based on ``filters``, ``structure``,</span>
+<span class="sd">        and ``latest_by`` arguments as defined by the user.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dict[str, str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;filters&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">),</span>
+            <span class="s2">&quot;structure&quot;</span><span class="p">:</span> <span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">)),</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">api_params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="s2">&quot;latestBy&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_by</span>
+            <span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">api_params</span>
+
+<div class="viewcode-block" id="Cov19API.head"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.head">[docs]</a>    <span class="k">def</span> <span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Request header for the given input arguments (``filters``,</span>
+<span class="sd">        ``structure``, and ``lastest_by``).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dict[str, str]</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; filters = [&quot;areaType=region&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; structure = {</span>
+<span class="sd">        ...     &quot;name&quot;: &quot;areaName&quot;,</span>
+<span class="sd">        ...     &quot;newCases&quot;: &quot;newCasesBySpecimenDate&quot;</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; data = Cov19API(</span>
+<span class="sd">        ...     filters=filters,</span>
+<span class="sd">        ...     structure=structure,</span>
+<span class="sd">        ...     latest_by=&#39;newCasesBySpecimenDate&#39;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; head = data.head()</span>
+<span class="sd">        &gt;&gt;&gt; print(head)</span>
+<span class="sd">        {&#39;Cache-Control&#39;: &#39;public, max-age=60&#39;, &#39;Content-Length&#39;: &#39;0&#39;,</span>
+<span class="sd">         ...</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_params</span>
+
+        <span class="k">with</span> <span class="n">request</span><span class="p">(</span><span class="s2">&quot;HEAD&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">,</span>
+                     <span class="n">verify</span><span class="o">=</span><span class="n">certifi</span><span class="o">.</span><span class="n">where</span><span class="p">())</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span></div>
+
+<div class="viewcode-block" id="Cov19API.options"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.options">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">options</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :staticmethod:</span>
+
+<span class="sd">        Provides the options by calling the ``OPTIONS`` method of the API.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            API options.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from pprint import pprint</span>
+<span class="sd">        &gt;&gt;&gt; options = Cov19API.options()</span>
+<span class="sd">        &gt;&gt;&gt; pprint(options)</span>
+<span class="sd">        {&#39;info&#39;: {&#39;description&#39;: &quot;Public Health England&#39;s Coronavirus Dashboard API&quot;,</span>
+<span class="sd">         &#39;title&#39;: &#39;Dashboard API&#39;,</span>
+<span class="sd">         &#39;version&#39;: &#39;1.0&#39;},</span>
+<span class="sd">         &#39;openapi&#39;: &#39;3.0.1&#39;,</span>
+<span class="sd">          ...</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">request</span><span class="p">(</span><span class="s2">&quot;OPTIONS&quot;</span><span class="p">,</span> <span class="n">Cov19API</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">certifi</span><span class="o">.</span><span class="n">where</span><span class="p">())</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_as</span><span class="p">:</span> <span class="n">DataFormat</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Response</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracts paginated data by requesting all of the pages</span>
+<span class="sd">        and combining the results.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format_as: str</span>
+<span class="sd">            Response format.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Iterator[Response]</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        FailedRequestError</span>
+<span class="sd">            When the request fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_params</span>
+
+        <span class="n">api_params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="n">format_as</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">})</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">request</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">,</span>
+                         <span class="n">verify</span><span class="o">=</span><span class="n">certifi</span><span class="o">.</span><span class="n">where</span><span class="p">())</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&gt;=</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">FailedRequestError</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">NO_CONTENT</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">total_pages</span> <span class="o">=</span> <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;page&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="k">break</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_last_update</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Last-Modified&quot;</span><span class="p">]</span>
+
+                <span class="k">yield</span> <span class="n">response</span>
+
+            <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;page&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="Cov19API.get_json"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.get_json">[docs]</a>    <span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_as</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">as_string</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Provides full data (all pages) in JSON.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        save_as: Union[str, None]</span>
+<span class="sd">            If defined, the results will (also) be saved as a</span>
+<span class="sd">            file. [Default: ``None``]</span>
+
+<span class="sd">            The value must be a path to a file with the correct</span>
+<span class="sd">            extension -- i.e. ``.json`` for JSON).</span>
+
+<span class="sd">        as_string: bool</span>
+<span class="sd">            .. versionadded:: 1.1.4</span>
+
+<span class="sd">            If ``False`` (default), returns the data as a dictionary.</span>
+<span class="sd">            Otherwise, returns the data as a JSON string.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Union[Dict, str]</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; filters = [&quot;areaType=region&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; structure = {</span>
+<span class="sd">        ...     &quot;name&quot;: &quot;areaName&quot;,</span>
+<span class="sd">        ...     &quot;newCases&quot;: &quot;newCasesBySpecimenDate&quot;</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; data = Cov19API(</span>
+<span class="sd">        ...     filters=filters,</span>
+<span class="sd">        ...     structure=structure,</span>
+<span class="sd">        ...     latest_by=&#39;newCasesBySpecimenDate&#39;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; result = data.get_json()</span>
+<span class="sd">        &gt;&gt;&gt; print(result)</span>
+<span class="sd">        {&#39;data&#39;: [{&#39;name&#39;: &#39;East Midlands&#39;, &#39;newCases&#39;: 0}, ... }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">DataFormat</span><span class="o">.</span><span class="n">JSON</span><span class="p">):</span>
+            <span class="n">current_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="n">page_data</span> <span class="o">=</span> <span class="n">current_data</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+
+            <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">page_data</span><span class="p">)</span>
+
+        <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;lastUpdate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_update</span>
+        <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+        <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;totalPages&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_pages</span>
+
+        <span class="k">if</span> <span class="n">as_string</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">dumps</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">save_as</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">resp</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">dumps</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">))</span>
+        <span class="n">save_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">save_as</span><span class="p">,</span> <span class="n">DataFormat</span><span class="o">.</span><span class="n">JSON</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+<div class="viewcode-block" id="Cov19API.get_xml"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.get_xml">[docs]</a>    <span class="k">def</span> <span class="nf">get_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_as</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XMLElement</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Provides full data (all pages) in XML.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        save_as: Union[str, None]</span>
+<span class="sd">            If defined, the results will (also) be saved as a</span>
+<span class="sd">            file. [Default: ``None``]</span>
+
+<span class="sd">            The value must be a path to a file with the correct</span>
+<span class="sd">            extension -- i.e. ``.xml`` for XML).</span>
+
+<span class="sd">        as_string: bool</span>
+<span class="sd">            .. versionadded:: 1.1.4</span>
+
+<span class="sd">            If ``False`` (default), returns an ``ElementTree``</span>
+<span class="sd">            object. Otherwise, returns the data as an XML string.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xml.etree.ElementTree.Element</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from xml.etree.ElementTree import tostring</span>
+<span class="sd">        &gt;&gt;&gt; filters = [&quot;areaType=region&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; structure = {</span>
+<span class="sd">        ...     &quot;name&quot;: &quot;areaName&quot;,</span>
+<span class="sd">        ...     &quot;newCases&quot;: &quot;newCasesBySpecimenDate&quot;</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; data = Cov19API(</span>
+<span class="sd">        ...     filters=filters,</span>
+<span class="sd">        ...     structure=structure,</span>
+<span class="sd">        ...     latest_by=&#39;newCasesBySpecimenDate&#39;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; result_xml = data.get_xml()</span>
+<span class="sd">        &gt;&gt;&gt; result_str = tostring(result_xml, encoding=&#39;unicode&#39;, method=&#39;xml&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(result_str)</span>
+<span class="sd">        &lt;document&gt;</span>
+<span class="sd">            &lt;data&gt;</span>
+<span class="sd">                &lt;name&gt;East Midlands&lt;/name&gt;</span>
+<span class="sd">                &lt;newCases&gt;0&lt;/newCases&gt;</span>
+<span class="sd">            &lt;/data&gt;</span>
+<span class="sd">            ...</span>
+<span class="sd">        &lt;/document&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">xml.etree.ElementTree</span> <span class="kn">import</span> <span class="n">SubElement</span><span class="p">,</span> <span class="n">fromstring</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">XMLElement</span><span class="p">(</span><span class="s2">&quot;document&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">DataFormat</span><span class="o">.</span><span class="n">XML</span><span class="p">):</span>
+            <span class="n">decoded_content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+            <span class="c1"># Parsing the XML:</span>
+            <span class="n">parsed_data</span> <span class="o">=</span> <span class="n">fromstring</span><span class="p">(</span><span class="n">decoded_content</span><span class="p">)</span>
+
+            <span class="c1"># Extracting &quot;data&quot; elements from the tree:</span>
+            <span class="n">page_data</span> <span class="o">=</span> <span class="n">parsed_data</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//data&quot;</span><span class="p">)</span>
+
+            <span class="n">resp</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">page_data</span><span class="p">)</span>
+
+        <span class="n">extras</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;lastUpdate&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_update</span><span class="p">,</span>
+            <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//data&quot;</span><span class="p">)),</span>
+            <span class="s2">&quot;totalPages&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_pages</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">elm_name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">extras</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">elm</span> <span class="o">=</span> <span class="n">SubElement</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">elm_name</span><span class="p">)</span>
+            <span class="n">elm</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">save_as</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">as_string</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">resp</span>
+
+        <span class="kn">from</span> <span class="nn">xml.etree.ElementTree</span> <span class="kn">import</span> <span class="n">tostring</span>
+
+        <span class="n">str_data</span> <span class="o">=</span> <span class="n">tostring</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;unicode&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">as_string</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">str_data</span>
+
+        <span class="n">save_data</span><span class="p">(</span><span class="n">str_data</span><span class="p">,</span> <span class="n">save_as</span><span class="p">,</span> <span class="n">DataFormat</span><span class="o">.</span><span class="n">XML</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+<div class="viewcode-block" id="Cov19API.get_csv"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.get_csv">[docs]</a>    <span class="k">def</span> <span class="nf">get_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_as</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Provides full data (all pages) in CSV.</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            Please make sure that the ``structure`` is not hierarchical as</span>
+<span class="sd">            CSV outputs are defined as 2D tables and as such, do not support</span>
+<span class="sd">            hierarchies.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        save_as: Union[str, None]</span>
+<span class="sd">            If defined, the results will (also) be saved as a</span>
+<span class="sd">            file. [Default: ``None``]</span>
+
+<span class="sd">            The value must be a path to a file with the correct</span>
+<span class="sd">            extension -- i.e. ``.csv`` for CSV).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the structure is nested.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; filters = [&quot;areaType=region&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; structure = {</span>
+<span class="sd">        ...     &quot;name&quot;: &quot;areaName&quot;,</span>
+<span class="sd">        ...     &quot;newCases&quot;: &quot;newCasesBySpecimenDate&quot;</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; data = Cov19API(</span>
+<span class="sd">        ...     filters=filters,</span>
+<span class="sd">        ...     structure=structure,</span>
+<span class="sd">        ...     latest_by=&#39;newCasesBySpecimenDate&#39;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; result = data.get_csv()</span>
+<span class="sd">        &gt;&gt;&gt; print(result)</span>
+<span class="sd">        name,newCases</span>
+<span class="sd">        East Midlands,0</span>
+<span class="sd">        ...</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Checks to ensure that the structure is</span>
+        <span class="c1"># not hierarchical.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">non_str</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">non_str</span><span class="p">):</span>
+                <span class="n">struct</span> <span class="o">=</span> <span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;CSV structure cannot be nested. Received:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">struct</span><span class="p">)</span>
+
+        <span class="n">linebreak</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">page_num</span><span class="p">,</span> <span class="n">response</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">DataFormat</span><span class="o">.</span><span class="n">CSV</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">decoded_content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+            <span class="c1"># Removing CSV header (column names) where page</span>
+            <span class="c1"># number is greater than 1.</span>
+            <span class="k">if</span> <span class="n">page_num</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">data_lines</span> <span class="o">=</span> <span class="n">decoded_content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">linebreak</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="n">decoded_content</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">linebreak</span><span class="p">,</span> <span class="n">data_lines</span><span class="p">)</span>
+
+            <span class="n">resp</span> <span class="o">+=</span> <span class="n">decoded_content</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="n">linebreak</span>
+
+        <span class="k">if</span> <span class="n">save_as</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">resp</span>
+
+        <span class="n">save_data</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">save_as</span><span class="p">,</span> <span class="n">DataFormat</span><span class="o">.</span><span class="n">CSV</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+<div class="viewcode-block" id="Cov19API.get_dataframe"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.get_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Provides the data as as ``pandas.DataFrame`` object.</span>
+
+<span class="sd">        .. versionadded:: 1.2.0</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            The ``pandas`` library is not included in the dependencies of this</span>
+<span class="sd">            library and must be installed separately.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataFrame</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ImportError</span>
+<span class="sd">            If the ``pandas`` library is not installed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                <span class="s2">&quot;The `pandas` library is not installed as a part of the `uk-covid19` &quot;</span>
+                <span class="s2">&quot;library. Please install the library and try again.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">df</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="s2">&quot;COVID-19 in the UK - API Service</span><span class="se">\n</span><span class="s2">Current parameters: </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">resp</span> <span class="o">+</span> <span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api_params</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="fm">__repr__</span> <span class="o">=</span> <span class="fm">__str__</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020 - Public Health England
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

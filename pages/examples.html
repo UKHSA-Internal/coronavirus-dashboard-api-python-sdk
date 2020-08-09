@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Examples &mdash; uk-covid19  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Coronavirus Dashboard API: Python SDK" href="../uk_covid19/uk_covid19.html" />
+    <link rel="prev" title="Getting started" href="getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> uk-covid19
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general-use">General use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#timestamps">Timestamps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#latest-data">Latest data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#saving-the-data">Saving the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-as-json-string">Data as JSON string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-as-pandas-dataframe">Data as Pandas DataFrame</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../uk_covid19/uk_covid19.html">Coronavirus Dashboard API: Python SDK</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">uk-covid19</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Examples</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/pages/examples.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>This section provides simple examples for the library.</p>
+<div class="section" id="general-use">
+<h2>General use<a class="headerlink" href="#general-use" title="Permalink to this headline">¶</a></h2>
+<p>We would like to extract the number of new cases, cumulative cases, new deaths and
+cumulative deaths for England using the API.</p>
+<p>We start off by importing the library into our workspace:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">uk_covid19</span> <span class="kn">import</span> <span class="n">Cov19API</span>
+</pre></div>
+</div>
+<p>Next, we construct the value of the <code class="docutils literal notranslate"><span class="pre">filters</span></code> parameter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">england_only</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;areaType=nation&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;areaName=England&#39;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Next step is to construct the value of the <code class="docutils literal notranslate"><span class="pre">structure</span></code> parameter. To do so, we need to
+find out the name of the metric in which we are interested. You can find this information
+in the <span class="target" id="developers-guide">Developers Guide</span> on the Coronavirus Dashboard website.</p>
+<p>In the case of this example, the metrics are as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">newCasesByPublishDate</span></code>: New cases (by publish date)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cumCasesByPublishDate</span></code>: Cumulative cases (by publish date)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">newDeathsByDeathDate</span></code>: New deaths (by death date)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cumDeathsByDeathDate</span></code>: Cumulative deaths (by death date)</p></li>
+</ul>
+<p>In its simplest form, we construct the structure as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cases_and_deaths</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaName&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;areaCode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumDeathsByDeathDate&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now, we may use <code class="docutils literal notranslate"><span class="pre">filters</span></code> and <code class="docutils literal notranslate"><span class="pre">structure</span></code> to initialise the <code class="docutils literal notranslate"><span class="pre">Covid19API</span></code> object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">api</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="n">england_only</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="n">cases_and_deaths</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>  <span class="c1"># Returns a dictionary</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You may also use <code class="docutils literal notranslate"><span class="pre">data.get_xml()</span></code> or <code class="docutils literal notranslate"><span class="pre">data.get_csv()</span></code> to download the data in other
+available formats.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-07-28&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;areaName&#39;</span><span class="p">:</span> <span class="s1">&#39;England&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;areaCode&#39;</span><span class="p">:</span> <span class="s1">&#39;E92000001&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;newCasesByPublishDate&#39;</span><span class="p">:</span> <span class="mi">547</span><span class="p">,</span>
+            <span class="s1">&#39;cumCasesByPublishDate&#39;</span><span class="p">:</span> <span class="mi">259022</span><span class="p">,</span>
+            <span class="s1">&#39;newDeathsByDeathDate&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;cumDeathsByDeathDate&#39;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-07-27&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;areaName&#39;</span><span class="p">:</span> <span class="s1">&#39;England&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;areaCode&#39;</span><span class="p">:</span> <span class="s1">&#39;E92000001&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;newCasesByPublishDate&#39;</span><span class="p">:</span> <span class="mi">616</span><span class="p">,</span>
+            <span class="s1">&#39;cumCasesByPublishDate&#39;</span><span class="p">:</span> <span class="mi">258475</span><span class="p">,</span>
+            <span class="s1">&#39;newDeathsByDeathDate&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="s1">&#39;cumDeathsByDeathDate&#39;</span><span class="p">:</span> <span class="mi">41282</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;lastUpdate&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-07-28T15:34:31.000000Z&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;length&#39;</span><span class="p">:</span> <span class="mi">162</span><span class="p">,</span>
+    <span class="s1">&#39;totalPages&#39;</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="timestamps">
+<h2>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this headline">¶</a></h2>
+<p>There are two options to get the timestamp for the last update:</p>
+<ul class="simple">
+<li><p>Using the <code class="docutils literal notranslate"><span class="pre">.last_update</span></code> property.</p></li>
+<li><p>Using the <code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code> (static) method.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please note that the timestamp produced by the <code class="docutils literal notranslate"><span class="pre">.last_update</span></code> property is not the
+same as the which is produced by the <code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code> method. The former
+supplies the API timestamp - i.e. the time at which the data were deployed to the
+database - whilst the latter supplies the time at which the data were <strong>released</strong> to
+the API and by extension the website. There will always be a difference lag between
+the two timestamps as the data undergo a quality assurance process before they are
+released to the API / website.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">uk_covid19</span> <span class="kn">import</span> <span class="n">Cov19API</span>
+
+<span class="n">cases_and_deaths</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaName&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;areaCode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumDeathsByDeathDate&quot;</span>
+<span class="p">}</span>
+
+<span class="n">england_only</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;areaType=nation&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;areaName=England&#39;</span>
+<span class="p">]</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="n">england_only</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="n">cases_and_deaths</span><span class="p">)</span>
+<span class="n">api_timestamp</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">last_update</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">api_timestamp</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2020</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">28</span><span class="n">T14</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mf">31.000000</span><span class="n">Z</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">uk_covid19</span> <span class="kn">import</span> <span class="n">Cov19API</span>
+
+<span class="n">release_timestamp</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="o">.</span><span class="n">get_release_timestamp</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">release_timestamp</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2020</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">28</span><span class="n">T15</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">00.431323</span><span class="n">Z</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.last_update</span></code> timestamp is produced if and <em>only</em> if the <code class="docutils literal notranslate"><span class="pre">Cov19API</span></code>
+object is instantiated - i.e. when specific <code class="docutils literal notranslate"><span class="pre">filters</span></code> and <code class="docutils literal notranslate"><span class="pre">structure</span></code> parameters have
+been set. On the other hand, <code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code> is a static method and therefore
+independent of parameters. This is because the <code class="docutils literal notranslate"><span class="pre">.last_update</span></code> timestamp is specific to
+a set of query metrics and is extracted from the <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> of an API request. The
+<code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code> method is, however, extracted from a static file which is
+generated a the precise moment when the data is released.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It may take up to 60 seconds for the data to be updated when the <em>release timestamp</em>
+(<code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code>) is updated. This is because the cache refresh before the
+new data becomes available. The <strong>API timestamp</strong> (<code class="docutils literal notranslate"><span class="pre">.last_update</span></code>), however, is only
+updated when the cache has been refreshed. This means that you can only be certain that
+you are receiving the most up-to-data data when the <code class="docutils literal notranslate"><span class="pre">.last_update</span></code> timestamp for your
+specific parameters have been updated.</p>
+</div>
+</div>
+<div class="section" id="latest-data">
+<h2>Latest data<a class="headerlink" href="#latest-data" title="Permalink to this headline">¶</a></h2>
+<p>To get the latest data by a specific metric, run:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">uk_covid19</span> <span class="kn">import</span> <span class="n">Cov19API</span>
+
+<span class="n">all_nations</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;areaType=nation&quot;</span>
+<span class="p">]</span>
+
+<span class="n">cases_and_deaths</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaName&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;areaCode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumDeathsByDeathDate&quot;</span>
+<span class="p">}</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span>
+    <span class="n">filters</span><span class="o">=</span><span class="n">all_nations</span><span class="p">,</span>
+    <span class="n">structure</span><span class="o">=</span><span class="n">cases_and_deaths</span><span class="p">,</span>
+    <span class="n">latest_by</span><span class="o">=</span><span class="s2">&quot;newCasesByPublishDate&quot;</span>
+<span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-07-28&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;areaName&quot;</span><span class="p">:</span> <span class="s2">&quot;England&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;E92000001&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="mi">547</span><span class="p">,</span>
+            <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="mi">259022</span><span class="p">,</span>
+            <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-07-28&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;areaName&quot;</span><span class="p">:</span> <span class="s2">&quot;Northern Ireland&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;N92000002&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+            <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="mi">5921</span><span class="p">,</span>
+            <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-07-28&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;areaName&quot;</span><span class="p">:</span> <span class="s2">&quot;Scotland&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;S92000003&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="mi">18558</span><span class="p">,</span>
+            <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-07-28&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;areaName&quot;</span><span class="p">:</span> <span class="s2">&quot;Wales&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;W92000004&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
+            <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="mi">17191</span><span class="p">,</span>
+            <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;lastUpdate&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-07-28T15:34:31.000000Z&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="s2">&quot;totalPages&quot;</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="saving-the-data">
+<h2>Saving the data<a class="headerlink" href="#saving-the-data" title="Permalink to this headline">¶</a></h2>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">save_as</span></code> input argument to a path to save the data in a file. This
+functionality is only available for <code class="docutils literal notranslate"><span class="pre">.get_json()</span></code>, <code class="docutils literal notranslate"><span class="pre">.get_xml()</span></code> and <code class="docutils literal notranslate"><span class="pre">.get_csv()</span></code>
+methods.</p>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">save_as</span></code> argument must be set to a file name with the correct extension;
+that is, <code class="docutils literal notranslate"><span class="pre">.json</span></code> for JSON data, <code class="docutils literal notranslate"><span class="pre">.xml</span></code> for XML data, and <code class="docutils literal notranslate"><span class="pre">.csv</span></code> for CSV data. It is
+assumed that the directory in which you wish to save the file already exists.</p>
+<p>You may use relative or absolute paths.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">uk_covid19</span> <span class="kn">import</span> <span class="n">Cov19API</span>
+
+<span class="n">all_nations</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;areaType=nation&quot;</span>
+<span class="p">]</span>
+
+<span class="n">cases_and_deaths</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaName&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;areaCode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumDeathsByDeathDate&quot;</span>
+<span class="p">}</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span>
+    <span class="n">filters</span><span class="o">=</span><span class="n">all_nations</span><span class="p">,</span>
+    <span class="n">structure</span><span class="o">=</span><span class="n">cases_and_deaths</span><span class="p">,</span>
+    <span class="n">latest_by</span><span class="o">=</span><span class="s2">&quot;newCasesByPublishDate&quot;</span>
+<span class="p">)</span>
+
+<span class="n">api</span><span class="o">.</span><span class="n">get_csv</span><span class="p">(</span><span class="n">save_as</span><span class="o">=</span><span class="s2">&quot;some_existing_directory/data.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will create a file entitled <code class="docutils literal notranslate"><span class="pre">data.csv</span></code> under <code class="docutils literal notranslate"><span class="pre">some_existing_directory</span></code>. The
+contents of the file would be as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">date</span><span class="p">,</span><span class="n">areaName</span><span class="p">,</span><span class="n">areaCode</span><span class="p">,</span><span class="n">newCasesByPublishDate</span><span class="p">,</span><span class="n">cumCasesByPublishDate</span><span class="p">,</span><span class="n">newDeathsByDeathDate</span><span class="p">,</span><span class="n">cumDeathsByDeathDate</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">28</span><span class="p">,</span><span class="n">England</span><span class="p">,</span><span class="n">E92000001</span><span class="p">,</span><span class="mi">547</span><span class="p">,</span><span class="mi">259022</span><span class="p">,,</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">28</span><span class="p">,</span><span class="n">Northern</span> <span class="n">Ireland</span><span class="p">,</span><span class="n">N92000002</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">5921</span><span class="p">,,</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">28</span><span class="p">,</span><span class="n">Scotland</span><span class="p">,</span><span class="n">S92000003</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">18558</span><span class="p">,,</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">28</span><span class="p">,</span><span class="n">Wales</span><span class="p">,</span><span class="n">W92000004</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">17191</span><span class="p">,,</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-as-json-string">
+<h2>Data as JSON string<a class="headerlink" href="#data-as-json-string" title="Permalink to this headline">¶</a></h2>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">as_string</span></code> input argument to <code class="docutils literal notranslate"><span class="pre">True</span></code> for the <code class="docutils literal notranslate"><span class="pre">.get_json()</span></code> method if you
+wish to receive the result as a JSON string instead of a <code class="docutils literal notranslate"><span class="pre">dict</span></code> object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">uk_covid19</span> <span class="kn">import</span> <span class="n">Cov19API</span>
+
+<span class="n">all_nations</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;areaType=nation&quot;</span>
+<span class="p">]</span>
+
+<span class="n">cases_and_deaths</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaName&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;areaCode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumDeathsByDeathDate&quot;</span>
+<span class="p">}</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span>
+    <span class="n">filters</span><span class="o">=</span><span class="n">all_nations</span><span class="p">,</span>
+    <span class="n">structure</span><span class="o">=</span><span class="n">cases_and_deaths</span><span class="p">,</span>
+    <span class="n">latest_by</span><span class="o">=</span><span class="s2">&quot;newCasesByPublishDate&quot;</span>
+<span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="n">as_string</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:[{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span><span class="s2">&quot;2020-07-28&quot;</span><span class="p">,</span><span class="s2">&quot;areaName&quot;</span><span class="p">:</span><span class="s2">&quot;England&quot;</span><span class="p">,</span><span class="s2">&quot;areaCode&quot;</span><span class="p">:</span><span class="s2">&quot;E92000001&quot;</span><span class="p">,</span><span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">547</span><span class="p">,</span><span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">259022</span><span class="p">,</span><span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">},{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span><span class="s2">&quot;2020-07-28&quot;</span><span class="p">,</span><span class="s2">&quot;areaName&quot;</span><span class="p">:</span><span class="s2">&quot;Northern Ireland&quot;</span><span class="p">,</span><span class="s2">&quot;areaCode&quot;</span><span class="p">:</span><span class="s2">&quot;N92000002&quot;</span><span class="p">,</span><span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">9</span><span class="p">,</span><span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">5921</span><span class="p">,</span><span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">},{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span><span class="s2">&quot;2020-07-28&quot;</span><span class="p">,</span><span class="s2">&quot;areaName&quot;</span><span class="p">:</span><span class="s2">&quot;Scotland&quot;</span><span class="p">,</span><span class="s2">&quot;areaCode&quot;</span><span class="p">:</span><span class="s2">&quot;S92000003&quot;</span><span class="p">,</span><span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">18558</span><span class="p">,</span><span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">},{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span><span class="s2">&quot;2020-07-28&quot;</span><span class="p">,</span><span class="s2">&quot;areaName&quot;</span><span class="p">:</span><span class="s2">&quot;Wales&quot;</span><span class="p">,</span><span class="s2">&quot;areaCode&quot;</span><span class="p">:</span><span class="s2">&quot;W92000004&quot;</span><span class="p">,</span><span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">21</span><span class="p">,</span><span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">17191</span><span class="p">,</span><span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">}],</span><span class="s2">&quot;lastUpdate&quot;</span><span class="p">:</span><span class="s2">&quot;2020-07-28T15:34:31.000000Z&quot;</span><span class="p">,</span><span class="s2">&quot;length&quot;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="s2">&quot;totalPages&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-as-pandas-dataframe">
+<h2>Data as Pandas DataFrame<a class="headerlink" href="#data-as-pandas-dataframe" title="Permalink to this headline">¶</a></h2>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">.get_dataframe()</span></code> method to get the data as a Pandas DataFrame object.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pandas</span></code> library is not included in the dependencies of this
+library and must be installed separately.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">uk_covid19</span> <span class="kn">import</span> <span class="n">Cov19API</span>
+
+<span class="n">all_nations</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;areaType=nation&quot;</span>
+<span class="p">]</span>
+
+<span class="n">cases_and_deaths</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaName&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;areaCode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumDeathsByDeathDate&quot;</span>
+<span class="p">}</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span>
+    <span class="n">filters</span><span class="o">=</span><span class="n">all_nations</span><span class="p">,</span>
+    <span class="n">structure</span><span class="o">=</span><span class="n">cases_and_deaths</span>
+<span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="n">date</span>          <span class="n">areaName</span>   <span class="n">areaCode</span>  <span class="n">newCasesByPublishDate</span>  <span class="n">cumCasesByPublishDate</span> <span class="n">newDeathsByDeathDate</span> <span class="n">cumDeathsByDeathDate</span>
+<span class="mi">0</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">08</span>           <span class="n">England</span>  <span class="n">E92000001</span>                    <span class="mi">679</span>               <span class="mf">267324.0</span>                 <span class="kc">None</span>                 <span class="kc">None</span>
+<span class="mi">1</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">08</span>  <span class="n">Northern</span> <span class="n">Ireland</span>  <span class="n">N92000002</span>                      <span class="mi">0</span>                    <span class="n">NaN</span>                 <span class="kc">None</span>                 <span class="kc">None</span>
+<span class="mi">2</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">08</span>          <span class="n">Scotland</span>  <span class="n">S92000003</span>                     <span class="mi">60</span>                <span class="mf">18950.0</span>                 <span class="kc">None</span>                 <span class="kc">None</span>
+<span class="mi">3</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">08</span>             <span class="n">Wales</span>  <span class="n">W92000004</span>                     <span class="mi">19</span>                <span class="mf">17425.0</span>                 <span class="kc">None</span>                 <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../uk_covid19/uk_covid19.html" class="btn btn-neutral float-right" title="Coronavirus Dashboard API: Python SDK" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020 - Public Health England
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
