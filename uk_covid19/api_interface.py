@@ -129,6 +129,8 @@ class Cov19API:
 
         Produces the website timestamp in GMT.
 
+        .. versionadded:: 1.2.0
+
         This property supplies the website timestamp - i.e. the time at which the data
         were released to the API and by extension the website. Please note that there
         will be a difference between this timestamp and the timestamp produced using
@@ -314,6 +316,8 @@ class Cov19API:
             extension -- i.e. ``.json`` for JSON).
 
         as_string: bool
+            .. versionadded:: 1.1.4
+
             If ``False`` (default), returns the data as a dictionary.
             Otherwise, returns the data as a JSON string.
 
@@ -376,6 +380,8 @@ class Cov19API:
             extension -- i.e. ``.xml`` for XML).
 
         as_string: bool
+            .. versionadded:: 1.1.4
+
             If ``False`` (default), returns an ``ElementTree``
             object. Otherwise, returns the data as an XML string.
 
@@ -528,6 +534,8 @@ class Cov19API:
     def get_dataframe(self):
         """
         Provides the data as as ``pandas.DataFrame`` object.
+
+        .. versionadded:: 1.2.0
 
         .. warning::
 

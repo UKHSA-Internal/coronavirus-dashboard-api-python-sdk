@@ -22,6 +22,11 @@ class AutoName(Enum):
 
 
 class DataFormat(AutoName):
+    """
+    Formats of the API Response.
+
+    .. versionadded:: 1.2.0
+    """
     JSON = auto()
     XML = auto()
     CSV = auto()
