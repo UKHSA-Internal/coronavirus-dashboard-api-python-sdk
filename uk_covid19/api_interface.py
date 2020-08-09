@@ -31,42 +31,51 @@ FiltersType = Iterable[str]
 
 class Cov19API:
     """
-    COVID-19 API
-    ------------
     Interface to access the API service for COVID-19 data in the United Kingdom.
+
+    Parameters
+    ----------
+    filters: Iterable[str]
+        API filters. See the API documentations for additional
+        information.
+
+    structure: Dict[str, Union[dict, str]]
+        Structure parameter. See the API documentations for
+        additional information.
+
+    latest_by: Union[str, None]
+        Retrieves the latest value for a specific metric. [Default: ``None``]
     """
     endpoint = "https://api.coronavirus.data.gov.uk/v1/data"
     release_timestamp_endpoint = "https://api.coronavirus.data.gov.uk/v1/timestamp"
 
     _last_update: Union[str, None] = None
-    total_pages: Union[int, None] = None
+    _total_pages: Union[int, None] = None
 
     def __init__(self, filters: FiltersType, structure: StructureType,
                  latest_by: Union[str, None] = None):
-        """
-        Parameters
-        ----------
-        filters: Iterable[str]
-            API filters. See the API documentations for additional
-            information.
-
-        structure: Dict[str, Union[dict, str]]
-            Structure parameter. See the API documentations for
-            additional information.
-
-        latest_by: Union[str, None]
-            Retrieves the latest value for a specific metric. [Default: ``None``]
-        """
         self.filters = filters
         self.structure = structure
         self.latest_by = latest_by
 
     @property
+    def total_pages(self) -> Union[int, None]:
+        """
+        :property:
+            Produces the total number of pages for a given set of
+            parameters (only after the data are requested).
+
+        Returns
+        -------
+        Union[int, None]
+        """
+        return self._total_pages
+
+    @property
     def last_update(self) -> str:
         """
         :property:
-
-        Produces the timestamp for the last update in GMT.
+            Produces the timestamp for the last update in GMT.
 
         This property supplies the API time - i.e. the time at which the data were
         deployed to the database. Please note that there will always be a difference
@@ -126,8 +135,7 @@ class Cov19API:
     def get_release_timestamp() -> str:
         """
         :staticmethod:
-
-        Produces the website timestamp in GMT.
+            Produces the website timestamp in GMT.
 
         .. versionadded:: 1.2.0
 
@@ -177,9 +185,8 @@ class Cov19API:
     def api_params(self) -> dict:
         """
         :staticmethod:
-
-        API parameters, constructed based on ``filters``, ``structure``,
-        and ``latest_by`` arguments as defined by the user.
+            API parameters, constructed based on ``filters``, ``structure``,
+            and ``latest_by`` arguments as defined by the user.
 
         Returns
         -------
@@ -235,8 +242,7 @@ class Cov19API:
     def options():
         """
         :staticmethod:
-
-        Provides the options by calling the ``OPTIONS`` method of the API.
+            Provides the options by calling the ``OPTIONS`` method of the API.
 
         Returns
         -------
@@ -292,7 +298,7 @@ class Cov19API:
                     raise FailedRequestError(response=response, params=api_params)
 
                 if response.status_code == HTTPStatus.NO_CONTENT:
-                    self.total_pages = api_params["page"] - 1
+                    self._total_pages = api_params["page"] - 1
                     break
 
                 self._last_update = response.headers["Last-Modified"]
@@ -353,7 +359,7 @@ class Cov19API:
 
         resp["lastUpdate"] = self.last_update
         resp["length"] = len(resp["data"])
-        resp["totalPages"] = self.total_pages
+        resp["totalPages"] = self._total_pages
 
         if as_string:
             return dumps(resp, separators=(",", ":"))
@@ -431,7 +437,7 @@ class Cov19API:
         extras = {
             "lastUpdate": self.last_update,
             "length": len(resp.findall(".//data")),
-            "totalPages": self.total_pages
+            "totalPages": self._total_pages
         }
 
         for elm_name, value in extras.items():
