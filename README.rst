@@ -10,19 +10,39 @@ Software Development Kit (SDK) for Python
 This is a Python SDK for the COVID-19 API, as published by Public Health England
 on `Coronavirus (COVID-19) in the UK`_.
 
+
+SDK for other languages
+.......................
+
 Similar libraries are also available for `JavaScript`_, `R`_, and `.Net`_.
 
-The API supplies the latest data for the COVID-19 outbreak in the United Kingdom. 
 
-The endpoint for the data provided using this SDK is:
+The API
+.......
+
+The API supplies the latest data for the COVID-19 outbreak in the United Kingdom. The
+endpoint for the data provided using this SDK is:
+
+::
 
     https://api.coronavirus.data.gov.uk/v1/data
+
+
+See the _`Developers Guide` for additional information on the API and see a list of
+latest metrics.
 
 
 Pagination
 ..........
 
-Using this SDK will bypass the pagination process. You will always download the entire
+The API responses are restricted to 1000 records per request. If you need more records,
+you will need to use the ``page`` query parameter to enable pagination.
+
+As a bonus, the SDKs come with a built-in mechanism to bypass pagination restrictions in
+the API and produce the entire data for a given combination of ``filters`` and
+``structure`` in one go.
+
+When accessing the API through one of the SDKs, you will always download the entire
 dataset unless the ``latest_by`` argument is defined.
 
 
@@ -35,20 +55,34 @@ To install, please run:
 
 .. code-block:: bash
 
+    pip install uk-covid19
+
+You may install the library for a specific version of Python as follows:
+
+.. code-block:: python
+
     python -m pip install uk-covid19
 
-and import it in Python as follows:
+You can simply replace ``python`` with a specific version for which you wish to install
+the library - e.g. ``python3`` or ``python3.8``.
+
+
+Importing the library
+.....................
+
+You can import the library into your Python script as follows:
 
 .. code-block:: python
 
     from uk_covid19 import Cov19API
 
 
-Note that you must use ``uk_covid19`` (with an underscore, not a hyphen) to import the
+**Note:** that you must use ``uk_covid19`` (with an underscore, not a hyphen) to import the
 library in Python.
 
-Example
-.......
+
+Examples
+--------
 
 We would like to extract the number of new cases, cumulative cases, new deaths and
 cumulative deaths for England using the API.
@@ -71,7 +105,7 @@ Next, we construct the value of the ``filters`` parameter:
 
 Next step is to construct the value of the ``structure`` parameter. To do so, we need to
 find out the name of the metric in which we are interested. You can find this information
-in the Developer's Guide on the Coronavirus Dashboard website.
+in the _`Developers Guide` on the Coronavirus Dashboard website.
 
 In the case of this example, the metrics are as follows:
 
@@ -264,6 +298,7 @@ Copyright (c) 2020, Public Health England.
 
 .. _`Coronavirus (COVID-19) in the UK`: http://coronavirus.data.gov.uk/
 .. _`Public Health England`: https://www.gov.uk/government/organisations/public-health-england
+.. _`Developers Guide`: https://coronavirus.data.gov.uk/developers-guide
 .. _`JavaScript`: https://github.com/publichealthengland/coronavirus-dashboard-api-javascript-sdk
 .. _`R`: https://github.com/publichealthengland/coronavirus-dashboard-api-R-sdk
 .. _`.Net`: https://github.com/publichealthengland/coronavirus-dashboard-api-net-sdk
