@@ -11,6 +11,7 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 from os import path
+from os import makedirs
 import sys
 from datetime import datetime
 
@@ -63,7 +64,9 @@ pygments_style = 'sphinx'
 #
 html_theme = "sphinx_rtd_theme"
 
-build_dir = path.abspath(path.join(doc_paths, path.pardir, "build"))
+build_dir = path.abspath(path.join(doc_paths, path.pardir, "build", "html"))
+
+makedirs(build_dir, exist_ok=True)
 
 with open(path.join(build_dir, "version"), "w") as file:
     print(release, file=file)
