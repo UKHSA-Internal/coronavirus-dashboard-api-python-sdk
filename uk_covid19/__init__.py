@@ -1,11 +1,8 @@
 #!/usr/bin python3
 
 """
-Coronavirus (COVID-19) Dashboard - API Service
-==============================================
-
-Software Development Kit (SDK)
-------------------------------
+Coronavirus Dashboard API: Python SDK
+=====================================
 
 This is a Python SDK for the COVID-19 API, as published by
 Public Health England on `Coronavirus (COVID-19) in the UK`_
