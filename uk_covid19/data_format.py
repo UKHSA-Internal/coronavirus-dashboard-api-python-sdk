@@ -17,8 +17,8 @@ __all__ = [
 
 
 class AutoName(Enum):
-    def _generate_next_value_(name, start, count, last_values):
-        return name.lower()
+    def _generate_next_value_(self, start, count, last_values):
+        return self.lower()
 
 
 class DataFormat(AutoName):
