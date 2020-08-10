@@ -14,7 +14,7 @@ on `Coronavirus (COVID-19) in the UK`_.
 SDK for other languages
 .......................
 
-Similar libraries are also available for `JavaScript`_, `R`_, and `.Net`_.
+Similar libraries are also available for `JavaScript`_, `R`_, `.Net`_, and `Elixir`_.
 
 
 Documentation
@@ -76,6 +76,7 @@ Copyright (c) 2020, Public Health England.
 .. _`R`: https://github.com/publichealthengland/coronavirus-dashboard-api-R-sdk
 .. _`.Net`: https://github.com/publichealthengland/coronavirus-dashboard-api-net-sdk
 .. _`documentations website`: https://publichealthengland.github.io/coronavirus-dashboard-api-python-sdk/
+.. _`Elixir`: https://github.com/publichealthengland/coronavirus-dashboard-api-elixir-sdk
 
 .. |PyPi_Version| image:: https://img.shields.io/pypi/v/uk-covid19
 .. |PyPi_Status| image:: https://img.shields.io/pypi/status/uk-covid19
