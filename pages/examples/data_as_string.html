@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Stringified JSON or XML &mdash; uk-covid19 1.2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Pandas DataFrame" href="pandas.html" />
+    <link rel="prev" title="Saving the data" href="saving.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> uk-covid19
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="general_use.html">General use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timestamps.html">Timestamps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="latest_data.html">Latest data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="saving.html">Saving the data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Stringified JSON or XML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pandas.html">Pandas DataFrame</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../uk_covid19/index.html">Coronavirus Dashboard API: Python SDK</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">uk-covid19</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="examples.html">Examples</a> &raquo;</li>
+        
+      <li>Stringified JSON or XML</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/pages/examples/data_as_string.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="stringified-json-or-xml">
+<h1>Stringified JSON or XML<a class="headerlink" href="#stringified-json-or-xml" title="Permalink to this headline">¶</a></h1>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">as_string</span></code> input argument to <code class="docutils literal notranslate"><span class="pre">True</span></code> for the <code class="docutils literal notranslate"><span class="pre">.get_json()</span></code> or <code class="docutils literal notranslate"><span class="pre">.get_xml()</span></code>
+methods if you wish to receive stringified JSON or XML entities:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">uk_covid19</span> <span class="kn">import</span> <span class="n">Cov19API</span>
+
+
+<span class="n">all_nations</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;areaType=nation&quot;</span>
+<span class="p">]</span>
+
+<span class="n">cases_and_deaths</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaName&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;areaCode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumDeathsByDeathDate&quot;</span>
+<span class="p">}</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span>
+    <span class="n">filters</span><span class="o">=</span><span class="n">all_nations</span><span class="p">,</span>
+    <span class="n">structure</span><span class="o">=</span><span class="n">cases_and_deaths</span><span class="p">,</span>
+    <span class="n">latest_by</span><span class="o">=</span><span class="s2">&quot;newCasesByPublishDate&quot;</span>
+<span class="p">)</span>
+
+<span class="n">json_data</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="n">as_string</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JSON:&quot;</span><span class="p">,</span> <span class="n">json_data</span><span class="p">)</span>
+
+<span class="n">xml_data</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_xml</span><span class="p">(</span><span class="n">as_string</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;XML:&quot;</span><span class="p">,</span> <span class="n">xml_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">JSON</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:[{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span><span class="s2">&quot;2020-08-09&quot;</span><span class="p">,</span><span class="s2">&quot;areaName&quot;</span><span class="p">:</span><span class="s2">&quot;England&quot;</span><span class="p">,</span><span class="s2">&quot;areaCode&quot;</span><span class="p">:</span><span class="s2">&quot;E92000001&quot;</span><span class="p">,</span><span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">988</span><span class="p">,</span><span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">268312</span><span class="p">,</span><span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">},{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span><span class="s2">&quot;2020-08-09&quot;</span><span class="p">,</span><span class="s2">&quot;areaName&quot;</span><span class="p">:</span><span class="s2">&quot;Northern Ireland&quot;</span><span class="p">,</span><span class="s2">&quot;areaCode&quot;</span><span class="p">:</span><span class="s2">&quot;N92000002&quot;</span><span class="p">,</span><span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">},{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span><span class="s2">&quot;2020-08-09&quot;</span><span class="p">,</span><span class="s2">&quot;areaName&quot;</span><span class="p">:</span><span class="s2">&quot;Scotland&quot;</span><span class="p">,</span><span class="s2">&quot;areaCode&quot;</span><span class="p">:</span><span class="s2">&quot;S92000003&quot;</span><span class="p">,</span><span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">48</span><span class="p">,</span><span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">18998</span><span class="p">,</span><span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">},{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span><span class="s2">&quot;2020-08-09&quot;</span><span class="p">,</span><span class="s2">&quot;areaName&quot;</span><span class="p">:</span><span class="s2">&quot;Wales&quot;</span><span class="p">,</span><span class="s2">&quot;areaCode&quot;</span><span class="p">:</span><span class="s2">&quot;W92000004&quot;</span><span class="p">,</span><span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">26</span><span class="p">,</span><span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span><span class="mi">17451</span><span class="p">,</span><span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">}],</span><span class="s2">&quot;lastUpdate&quot;</span><span class="p">:</span><span class="s2">&quot;2020-08-09T17:56:52.000000Z&quot;</span><span class="p">,</span><span class="s2">&quot;length&quot;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="s2">&quot;totalPages&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}</span>
+<span class="n">XML</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">document</span> <span class="n">xmlns</span><span class="p">:</span><span class="n">xsi</span><span class="o">=</span><span class="s2">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><span class="o">&gt;&lt;</span><span class="n">data</span><span class="o">&gt;&lt;</span><span class="n">date</span><span class="o">&gt;</span><span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">09</span><span class="o">&lt;/</span><span class="n">date</span><span class="o">&gt;&lt;</span><span class="n">areaName</span><span class="o">&gt;</span><span class="n">England</span><span class="o">&lt;/</span><span class="n">areaName</span><span class="o">&gt;&lt;</span><span class="n">areaCode</span><span class="o">&gt;</span><span class="n">E92000001</span><span class="o">&lt;/</span><span class="n">areaCode</span><span class="o">&gt;&lt;</span><span class="n">newCasesByPublishDate</span><span class="o">&gt;</span><span class="mi">988</span><span class="o">&lt;/</span><span class="n">newCasesByPublishDate</span><span class="o">&gt;&lt;</span><span class="n">cumCasesByPublishDate</span><span class="o">&gt;</span><span class="mi">268312</span><span class="o">&lt;/</span><span class="n">cumCasesByPublishDate</span><span class="o">&gt;&lt;</span><span class="n">newDeathsByDeathDate</span> <span class="n">xsi</span><span class="p">:</span><span class="n">nil</span><span class="o">=</span><span class="s2">&quot;true&quot;</span> <span class="o">/&gt;&lt;</span><span class="n">cumDeathsByDeathDate</span> <span class="n">xsi</span><span class="p">:</span><span class="n">nil</span><span class="o">=</span><span class="s2">&quot;true&quot;</span> <span class="o">/&gt;&lt;/</span><span class="n">data</span><span class="o">&gt;&lt;</span><span class="n">data</span><span class="o">&gt;&lt;</span><span class="n">date</span><span class="o">&gt;</span><span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">09</span><span class="o">&lt;/</span><span class="n">date</span><span class="o">&gt;&lt;</span><span class="n">areaName</span><span class="o">&gt;</span><span class="n">Northern</span> <span class="n">Ireland</span><span class="o">&lt;/</span><span class="n">areaName</span><span class="o">&gt;&lt;</span><span class="n">areaCode</span><span class="o">&gt;</span><span class="n">N92000002</span><span class="o">&lt;/</span><span class="n">areaCode</span><span class="o">&gt;&lt;</span><span class="n">newCasesByPublishDate</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">newCasesByPublishDate</span><span class="o">&gt;&lt;</span><span class="n">cumCasesByPublishDate</span> <span class="n">xsi</span><span class="p">:</span><span class="n">nil</span><span class="o">=</span><span class="s2">&quot;true&quot;</span> <span class="o">/&gt;&lt;</span><span class="n">newDeathsByDeathDate</span> <span class="n">xsi</span><span class="p">:</span><span class="n">nil</span><span class="o">=</span><span class="s2">&quot;true&quot;</span> <span class="o">/&gt;&lt;</span><span class="n">cumDeathsByDeathDate</span> <span class="n">xsi</span><span class="p">:</span><span class="n">nil</span><span class="o">=</span><span class="s2">&quot;true&quot;</span> <span class="o">/&gt;&lt;/</span><span class="n">data</span><span class="o">&gt;&lt;</span><span class="n">data</span><span class="o">&gt;&lt;</span><span class="n">date</span><span class="o">&gt;</span><span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">09</span><span class="o">&lt;/</span><span class="n">date</span><span class="o">&gt;&lt;</span><span class="n">areaName</span><span class="o">&gt;</span><span class="n">Scotland</span><span class="o">&lt;/</span><span class="n">areaName</span><span class="o">&gt;&lt;</span><span class="n">areaCode</span><span class="o">&gt;</span><span class="n">S92000003</span><span class="o">&lt;/</span><span class="n">areaCode</span><span class="o">&gt;&lt;</span><span class="n">newCasesByPublishDate</span><span class="o">&gt;</span><span class="mi">48</span><span class="o">&lt;/</span><span class="n">newCasesByPublishDate</span><span class="o">&gt;&lt;</span><span class="n">cumCasesByPublishDate</span><span class="o">&gt;</span><span class="mi">18998</span><span class="o">&lt;/</span><span class="n">cumCasesByPublishDate</span><span class="o">&gt;&lt;</span><span class="n">newDeathsByDeathDate</span> <span class="n">xsi</span><span class="p">:</span><span class="n">nil</span><span class="o">=</span><span class="s2">&quot;true&quot;</span> <span class="o">/&gt;&lt;</span><span class="n">cumDeathsByDeathDate</span> <span class="n">xsi</span><span class="p">:</span><span class="n">nil</span><span class="o">=</span><span class="s2">&quot;true&quot;</span> <span class="o">/&gt;&lt;/</span><span class="n">data</span><span class="o">&gt;&lt;</span><span class="n">data</span><span class="o">&gt;&lt;</span><span class="n">date</span><span class="o">&gt;</span><span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">09</span><span class="o">&lt;/</span><span class="n">date</span><span class="o">&gt;&lt;</span><span class="n">areaName</span><span class="o">&gt;</span><span class="n">Wales</span><span class="o">&lt;/</span><span class="n">areaName</span><span class="o">&gt;&lt;</span><span class="n">areaCode</span><span class="o">&gt;</span><span class="n">W92000004</span><span class="o">&lt;/</span><span class="n">areaCode</span><span class="o">&gt;&lt;</span><span class="n">newCasesByPublishDate</span><span class="o">&gt;</span><span class="mi">26</span><span class="o">&lt;/</span><span class="n">newCasesByPublishDate</span><span class="o">&gt;&lt;</span><span class="n">cumCasesByPublishDate</span><span class="o">&gt;</span><span class="mi">17451</span><span class="o">&lt;/</span><span class="n">cumCasesByPublishDate</span><span class="o">&gt;&lt;</span><span class="n">newDeathsByDeathDate</span> <span class="n">xsi</span><span class="p">:</span><span class="n">nil</span><span class="o">=</span><span class="s2">&quot;true&quot;</span> <span class="o">/&gt;&lt;</span><span class="n">cumDeathsByDeathDate</span> <span class="n">xsi</span><span class="p">:</span><span class="n">nil</span><span class="o">=</span><span class="s2">&quot;true&quot;</span> <span class="o">/&gt;&lt;/</span><span class="n">data</span><span class="o">&gt;&lt;</span><span class="n">lastUpdate</span><span class="o">&gt;</span><span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">09</span><span class="n">T17</span><span class="p">:</span><span class="mi">56</span><span class="p">:</span><span class="mf">52.000000</span><span class="n">Z</span><span class="o">&lt;/</span><span class="n">lastUpdate</span><span class="o">&gt;&lt;</span><span class="n">length</span><span class="o">&gt;</span><span class="mi">4</span><span class="o">&lt;/</span><span class="n">length</span><span class="o">&gt;&lt;</span><span class="n">totalPages</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">totalPages</span><span class="o">&gt;&lt;/</span><span class="n">document</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pandas.html" class="btn btn-neutral float-right" title="Pandas DataFrame" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="saving.html" class="btn btn-neutral float-left" title="Saving the data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020 - Public Health England
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

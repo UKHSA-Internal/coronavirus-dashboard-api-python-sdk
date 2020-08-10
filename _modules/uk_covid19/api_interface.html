@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>uk_covid19.api_interface &mdash; uk-covid19  documentation</title>
+  <title>uk_covid19.api_interface &mdash; uk-covid19 1.2.0 documentation</title>
   
 
   
@@ -83,8 +83,8 @@
               <p class="caption"><span class="caption-text">Table of Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../pages/getting_started.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pages/examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../uk_covid19/uk_covid19.html">Coronavirus Dashboard API: Python SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/examples/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../uk_covid19/index.html">Coronavirus Dashboard API: Python SDK</a></li>
 </ul>
 
             
@@ -180,44 +180,53 @@
 <span class="n">FiltersType</span> <span class="o">=</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="Cov19API"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API">[docs]</a><span class="k">class</span> <span class="nc">Cov19API</span><span class="p">:</span>
+<div class="viewcode-block" id="Cov19API"><a class="viewcode-back" href="../../uk_covid19/Cov19API.html#uk_covid19.api_interface.Cov19API">[docs]</a><span class="k">class</span> <span class="nc">Cov19API</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    COVID-19 API</span>
-<span class="sd">    ------------</span>
 <span class="sd">    Interface to access the API service for COVID-19 data in the United Kingdom.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filters: Iterable[str]</span>
+<span class="sd">        API filters. See the API documentations for additional</span>
+<span class="sd">        information.</span>
+
+<span class="sd">    structure: Dict[str, Union[dict, str]]</span>
+<span class="sd">        Structure parameter. See the API documentations for</span>
+<span class="sd">        additional information.</span>
+
+<span class="sd">    latest_by: Union[str, None]</span>
+<span class="sd">        Retrieves the latest value for a specific metric. [Default: ``None``]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://api.coronavirus.data.gov.uk/v1/data&quot;</span>
     <span class="n">release_timestamp_endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://api.coronavirus.data.gov.uk/v1/timestamp&quot;</span>
 
     <span class="n">_last_update</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">total_pages</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_total_pages</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="n">FiltersType</span><span class="p">,</span> <span class="n">structure</span><span class="p">:</span> <span class="n">StructureType</span><span class="p">,</span>
                  <span class="n">latest_by</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        filters: Iterable[str]</span>
-<span class="sd">            API filters. See the API documentations for additional</span>
-<span class="sd">            information.</span>
-
-<span class="sd">        structure: Dict[str, Union[dict, str]]</span>
-<span class="sd">            Structure parameter. See the API documentations for</span>
-<span class="sd">            additional information.</span>
-
-<span class="sd">        latest_by: Union[str, None]</span>
-<span class="sd">            Retrieves the latest value for a specific metric. [Default: ``None``]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="n">filters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">latest_by</span> <span class="o">=</span> <span class="n">latest_by</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">total_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :property:</span>
+<span class="sd">            Produces the total number of pages for a given set of</span>
+<span class="sd">            parameters (only after the data are requested).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Union[int, None]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_pages</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">last_update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :property:</span>
-
-<span class="sd">        Produces the timestamp for the last update in GMT.</span>
+<span class="sd">            Produces the timestamp for the last update in GMT.</span>
 
 <span class="sd">        This property supplies the API time - i.e. the time at which the data were</span>
 <span class="sd">        deployed to the database. Please note that there will always be a difference</span>
@@ -273,12 +282,11 @@
 
         <span class="k">return</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;.000000Z&quot;</span>
 
-<div class="viewcode-block" id="Cov19API.get_release_timestamp"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.get_release_timestamp">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Cov19API.get_release_timestamp"><a class="viewcode-back" href="../../uk_covid19/Cov19API.html#uk_covid19.api_interface.Cov19API.get_release_timestamp">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_release_timestamp</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :staticmethod:</span>
-
-<span class="sd">        Produces the website timestamp in GMT.</span>
+<span class="sd">            Produces the website timestamp in GMT.</span>
 
 <span class="sd">        .. versionadded:: 1.2.0</span>
 
@@ -328,9 +336,8 @@
     <span class="k">def</span> <span class="nf">api_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :staticmethod:</span>
-
-<span class="sd">        API parameters, constructed based on ``filters``, ``structure``,</span>
-<span class="sd">        and ``latest_by`` arguments as defined by the user.</span>
+<span class="sd">            API parameters, constructed based on ``filters``, ``structure``,</span>
+<span class="sd">            and ``latest_by`` arguments as defined by the user.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -348,7 +355,7 @@
 
         <span class="k">return</span> <span class="n">api_params</span>
 
-<div class="viewcode-block" id="Cov19API.head"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.head">[docs]</a>    <span class="k">def</span> <span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Cov19API.head"><a class="viewcode-back" href="../../uk_covid19/Cov19API.html#uk_covid19.api_interface.Cov19API.head">[docs]</a>    <span class="k">def</span> <span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Request header for the given input arguments (``filters``,</span>
 <span class="sd">        ``structure``, and ``lastest_by``).</span>
@@ -382,12 +389,11 @@
             <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span></div>
 
-<div class="viewcode-block" id="Cov19API.options"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.options">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Cov19API.options"><a class="viewcode-back" href="../../uk_covid19/Cov19API.html#uk_covid19.api_interface.Cov19API.options">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">options</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :staticmethod:</span>
-
-<span class="sd">        Provides the options by calling the ``OPTIONS`` method of the API.</span>
+<span class="sd">            Provides the options by calling the ``OPTIONS`` method of the API.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -443,7 +449,7 @@
                     <span class="k">raise</span> <span class="n">FailedRequestError</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">NO_CONTENT</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">total_pages</span> <span class="o">=</span> <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;page&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_total_pages</span> <span class="o">=</span> <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;page&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
                     <span class="k">break</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_last_update</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Last-Modified&quot;</span><span class="p">]</span>
@@ -452,7 +458,7 @@
 
             <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;page&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
-<div class="viewcode-block" id="Cov19API.get_json"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.get_json">[docs]</a>    <span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_as</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Cov19API.get_json"><a class="viewcode-back" href="../../uk_covid19/Cov19API.html#uk_covid19.api_interface.Cov19API.get_json">[docs]</a>    <span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_as</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">as_string</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Provides full data (all pages) in JSON.</span>
@@ -504,7 +510,7 @@
 
         <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;lastUpdate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_update</span>
         <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
-        <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;totalPages&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_pages</span>
+        <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;totalPages&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_pages</span>
 
         <span class="k">if</span> <span class="n">as_string</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">dumps</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">))</span>
@@ -517,7 +523,7 @@
 
         <span class="k">return</span> <span class="n">resp</span></div>
 
-<div class="viewcode-block" id="Cov19API.get_xml"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.get_xml">[docs]</a>    <span class="k">def</span> <span class="nf">get_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_as</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XMLElement</span><span class="p">:</span>
+<div class="viewcode-block" id="Cov19API.get_xml"><a class="viewcode-back" href="../../uk_covid19/Cov19API.html#uk_covid19.api_interface.Cov19API.get_xml">[docs]</a>    <span class="k">def</span> <span class="nf">get_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_as</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XMLElement</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Provides full data (all pages) in XML.</span>
 
@@ -582,7 +588,7 @@
         <span class="n">extras</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;lastUpdate&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_update</span><span class="p">,</span>
             <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//data&quot;</span><span class="p">)),</span>
-            <span class="s2">&quot;totalPages&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_pages</span>
+            <span class="s2">&quot;totalPages&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_pages</span>
         <span class="p">}</span>
 
         <span class="k">for</span> <span class="n">elm_name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">extras</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -603,7 +609,7 @@
 
         <span class="k">return</span> <span class="n">resp</span></div>
 
-<div class="viewcode-block" id="Cov19API.get_csv"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.get_csv">[docs]</a>    <span class="k">def</span> <span class="nf">get_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_as</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="Cov19API.get_csv"><a class="viewcode-back" href="../../uk_covid19/Cov19API.html#uk_covid19.api_interface.Cov19API.get_csv">[docs]</a>    <span class="k">def</span> <span class="nf">get_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_as</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Provides full data (all pages) in CSV.</span>
 
@@ -682,7 +688,7 @@
 
         <span class="k">return</span> <span class="n">resp</span></div>
 
-<div class="viewcode-block" id="Cov19API.get_dataframe"><a class="viewcode-back" href="../../uk_covid19/uk_covid19.html#uk_covid19.Cov19API.get_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Cov19API.get_dataframe"><a class="viewcode-back" href="../../uk_covid19/Cov19API.html#uk_covid19.api_interface.Cov19API.get_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Provides the data as as ``pandas.DataFrame`` object.</span>
 

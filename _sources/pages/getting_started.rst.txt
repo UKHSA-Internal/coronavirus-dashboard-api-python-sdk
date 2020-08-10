@@ -18,8 +18,9 @@ You may install the library for a specific version of Python as follows:
 
     python -m pip install uk-covid19
 
-You can simply replace ``python`` with a specific version for which you wish to install
-the library - e.g. ``python3`` or ``python3.8``.
+.. hint::
+    You can simply replace ``python`` with a specific version for which you wish to
+    install the library - e.g. ``python3`` or ``python3.8``.
 
 
 Importing the library
@@ -27,11 +28,11 @@ Importing the library
 
 You can import the library into your Python script as follows:
 
+.. attention::
+    You must use ``uk_covid19`` (with an underscore) not the library name ``uk-covid19``
+    (with a hyphen) to import the library in Python.
+
+
 .. code-block:: python
 
     from uk_covid19 import Cov19API
-
-
-.. note::
-    You must use ``uk_covid19`` (with an underscore, not a hyphen) to import the
-    library in Python.

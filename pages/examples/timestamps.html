@@ -1,0 +1,334 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Timestamps &mdash; uk-covid19 1.2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Latest data" href="latest_data.html" />
+    <link rel="prev" title="General use" href="general_use.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> uk-covid19
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="general_use.html">General use</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Timestamps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#latest-api-timestamp">Latest API timestamp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#latest-website-timestamp">Latest website timestamp</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="latest_data.html">Latest data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="saving.html">Saving the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_as_string.html">Stringified JSON or XML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pandas.html">Pandas DataFrame</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../uk_covid19/index.html">Coronavirus Dashboard API: Python SDK</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">uk-covid19</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="examples.html">Examples</a> &raquo;</li>
+        
+      <li>Timestamps</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/pages/examples/timestamps.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="timestamps">
+<h1>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this headline">¶</a></h1>
+<p>There are two options to get the timestamp for the last update:</p>
+<ul class="simple">
+<li><p>Using the <code class="docutils literal notranslate"><span class="pre">.last_update</span></code> property.</p></li>
+<li><p>Using the <code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code> (static) method.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The timestamp produced by the <code class="docutils literal notranslate"><span class="pre">.last_update</span></code> property is not the
+same as the which is produced by the <code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code> method. The former
+supplies the API timestamp - i.e. the time at which the data were deployed to the
+database - whilst the latter supplies the time at which the data were <strong>released</strong> to
+the API and by extension the website.</p>
+<p>There will always be a difference lag between
+the two timestamps as the data undergo a quality assurance process before they are
+released to the API / website.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.last_update</span></code> timestamp is produced if and <em>only</em> if the <code class="docutils literal notranslate"><span class="pre">Cov19API</span></code>
+object is instantiated - i.e. when specific <code class="docutils literal notranslate"><span class="pre">filters</span></code> and <code class="docutils literal notranslate"><span class="pre">structure</span></code> parameters have
+been set. On the other hand, <code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code> is a static method and therefore
+independent of parameters. This is because the <code class="docutils literal notranslate"><span class="pre">.last_update</span></code> timestamp is specific to
+a set of query metrics and is extracted from the <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> of an API request. The
+<code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code> method is, however, extracted from a static file which is
+generated a the precise moment when the data is released.</p>
+</div>
+<div class="section" id="latest-api-timestamp">
+<h2>Latest API timestamp<a class="headerlink" href="#latest-api-timestamp" title="Permalink to this headline">¶</a></h2>
+<dl class="attribute">
+<dt id="last_update">
+<code class="sig-name descname">last_update</code><a class="headerlink" href="#last_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>We use the <code class="docutils literal notranslate"><span class="pre">.last_update</span></code> property to extract the latest API timestamp.</p>
+</dd></dl>
+
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>The <code class="xref py py-attr docutils literal notranslate"><span class="pre">Cov19API.last_update</span></code> property only works if the the <code class="xref py py-class docutils literal notranslate"><span class="pre">Cov19API</span></code>
+has been instantiated. This means that the timestamp produced using this property
+is associated with a specific combination of <code class="docutils literal notranslate"><span class="pre">filters</span></code> and <code class="docutils literal notranslate"><span class="pre">structure</span></code>.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">uk_covid19</span> <span class="kn">import</span> <span class="n">Cov19API</span>
+
+<span class="n">cases_and_deaths</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaName&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;areaCode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumDeathsByDeathDate&quot;</span>
+<span class="p">}</span>
+
+<span class="n">england_only</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;areaType=nation&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;areaName=England&#39;</span>
+<span class="p">]</span>
+
+<span class="c1"># Instantiating the API object</span>
+<span class="n">api</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="n">england_only</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="n">cases_and_deaths</span><span class="p">)</span>
+
+<span class="c1"># Request the API timestamp</span>
+<span class="n">api_timestamp</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">last_update</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">api_timestamp</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2020</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">28</span><span class="n">T14</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mf">31.000000</span><span class="n">Z</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="latest-website-timestamp">
+<h2>Latest website timestamp<a class="headerlink" href="#latest-website-timestamp" title="Permalink to this headline">¶</a></h2>
+<dl class="method">
+<dt id="get_release_timestamp">
+<em class="property">static </em><code class="sig-name descname">get_release_timestamp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#get_release_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>We use the <code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code> static method to extract the latest API
+timestamp.</p>
+</dd></dl>
+
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>A static method does not require instantiation of the API object. This
+means that the timestamp is independent of query metrics and filters.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It may take up to 60 seconds for the data to be updated when the <em>release timestamp</em>
+(<code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code>) is updated. This is because the cache refresh before the
+new data becomes available. The <strong>API timestamp</strong> (<code class="docutils literal notranslate"><span class="pre">.last_update</span></code>), however, is only
+updated when the cache has been refreshed. This means that you can only be certain that
+you are receiving the most up-to-data data when the <code class="docutils literal notranslate"><span class="pre">.last_update</span></code> timestamp for your
+specific parameters have been updated.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">uk_covid19</span> <span class="kn">import</span> <span class="n">Cov19API</span>
+
+
+<span class="n">release_timestamp</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="o">.</span><span class="n">get_release_timestamp</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">release_timestamp</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2020</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">28</span><span class="n">T15</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">00.431323</span><span class="n">Z</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="latest_data.html" class="btn btn-neutral float-right" title="Latest data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="general_use.html" class="btn btn-neutral float-left" title="General use" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020 - Public Health England
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

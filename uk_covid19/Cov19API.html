@@ -1,0 +1,625 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>api_interface &mdash; uk-covid19 1.2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="data_format" href="data_format.html" />
+    <link rel="prev" title="Coronavirus Dashboard API: Python SDK" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> uk-covid19
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../pages/getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pages/examples/examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Coronavirus Dashboard API: Python SDK</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">api_interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_format.html">data_format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">uk-covid19</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Coronavirus Dashboard API: Python SDK</a> &raquo;</li>
+        
+      <li>api_interface</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/publichealthengland/coronavirus-dashboard-api-python-sdk/tree/master/uk_covid19/api_interface.py" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-uk_covid19.api_interface">
+<span id="api-interface"></span><h1>api_interface<a class="headerlink" href="#module-uk_covid19.api_interface" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="uk_covid19.api_interface.Cov19API">
+<em class="property">class </em><code class="sig-prename descclassname">uk_covid19.api_interface.</code><code class="sig-name descname">Cov19API</code><span class="sig-paren">(</span><em class="sig-param">filters: Iterable[str], structure: Dict[str, Union[dict, str]], latest_by: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uk_covid19/api_interface.html#Cov19API"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uk_covid19.api_interface.Cov19API" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface to access the API service for COVID-19 data in the United Kingdom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filters</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – API filters. See the API documentations for additional
+information.</p></li>
+<li><p><strong>structure</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Union</em><em>[</em><em>dict</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Structure parameter. See the API documentations for
+additional information.</p></li>
+<li><p><strong>latest_by</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>None</em><em>]</em>) – Retrieves the latest value for a specific metric. [Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>]</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="uk_covid19.api_interface.Cov19API.api_params">
+<em class="property">property </em><code class="sig-name descname">api_params</code><a class="headerlink" href="#uk_covid19.api_interface.Cov19API.api_params" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>staticmethod:</dt><dd><p>API parameters, constructed based on <code class="docutils literal notranslate"><span class="pre">filters</span></code>, <code class="docutils literal notranslate"><span class="pre">structure</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">latest_by</span></code> arguments as defined by the user.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="uk_covid19.api_interface.Cov19API.get_csv">
+<code class="sig-name descname">get_csv</code><span class="sig-paren">(</span><em class="sig-param">save_as=None</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/uk_covid19/api_interface.html#Cov19API.get_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uk_covid19.api_interface.Cov19API.get_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides full data (all pages) in CSV.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Please make sure that the <code class="docutils literal notranslate"><span class="pre">structure</span></code> is not hierarchical as
+CSV outputs are defined as 2D tables and as such, do not support
+hierarchies.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>save_as</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>None</em><em>]</em>) – <p>If defined, the results will (also) be saved as a
+file. [Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>]</p>
+<p>The value must be a path to a file with the correct
+extension – i.e. <code class="docutils literal notranslate"><span class="pre">.csv</span></code> for CSV).</p>
+</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the structure is nested.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;areaType=region&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">structure</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;newCases&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesBySpecimenDate&quot;</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">structure</span><span class="o">=</span><span class="n">structure</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">latest_by</span><span class="o">=</span><span class="s1">&#39;newCasesBySpecimenDate&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_csv</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">name,newCases</span>
+<span class="go">East Midlands,0</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="uk_covid19.api_interface.Cov19API.get_dataframe">
+<code class="sig-name descname">get_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uk_covid19/api_interface.html#Cov19API.get_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uk_covid19.api_interface.Cov19API.get_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides the data as as <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> object.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.2.0.</span></p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pandas</span></code> library is not included in the dependencies of this
+library and must be installed separately.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ImportError</strong> – If the <code class="docutils literal notranslate"><span class="pre">pandas</span></code> library is not installed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="uk_covid19.api_interface.Cov19API.get_json">
+<code class="sig-name descname">get_json</code><span class="sig-paren">(</span><em class="sig-param">save_as: Optional[str] = None</em>, <em class="sig-param">as_string: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[dict, str]<a class="reference internal" href="../_modules/uk_covid19/api_interface.html#Cov19API.get_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uk_covid19.api_interface.Cov19API.get_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides full data (all pages) in JSON.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>save_as</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>None</em><em>]</em>) – <p>If defined, the results will (also) be saved as a
+file. [Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>]</p>
+<p>The value must be a path to a file with the correct
+extension – i.e. <code class="docutils literal notranslate"><span class="pre">.json</span></code> for JSON).</p>
+</p></li>
+<li><p><strong>as_string</strong> (<em>bool</em>) – <div class="versionadded">
+<p><span class="versionmodified added">New in version 1.1.4.</span></p>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">False</span></code> (default), returns the data as a dictionary.
+Otherwise, returns the data as a JSON string.</p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[Dict, str]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;areaType=region&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">structure</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;newCases&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesBySpecimenDate&quot;</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">structure</span><span class="o">=</span><span class="n">structure</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">latest_by</span><span class="o">=</span><span class="s1">&#39;newCasesBySpecimenDate&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">{&#39;data&#39;: [{&#39;name&#39;: &#39;East Midlands&#39;, &#39;newCases&#39;: 0}, ... }</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="uk_covid19.api_interface.Cov19API.get_release_timestamp">
+<em class="property">static </em><code class="sig-name descname">get_release_timestamp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/uk_covid19/api_interface.html#Cov19API.get_release_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uk_covid19.api_interface.Cov19API.get_release_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Staticmethod</dt>
+<dd class="field-odd"><p>Produces the website timestamp in GMT.</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.2.0.</span></p>
+</div>
+<p>This property supplies the website timestamp - i.e. the time at which the data
+were released to the API and by extension the website. Please note that there
+will be a difference between this timestamp and the timestamp produced using
+the <code class="docutils literal notranslate"><span class="pre">last_update</span></code> property. The latter signifies the time at which the data
+were deployed to the database, not the time at which they were released.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The output is extracted from the header and is accurate to
+the miliseconds.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The ISO-8601 standard requires a <code class="docutils literal notranslate"><span class="pre">&quot;Z&quot;</span></code> character to be added
+to the end of the timestamp. This is a timezone feature and is
+not recognised by Python’s <code class="docutils literal notranslate"><span class="pre">datetime</span></code> library. It is, however,
+most other libraries; e.g. <code class="docutils literal notranslate"><span class="pre">pandas</span></code>. If you wish to parse the
+timestamp using the the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> library, make sure that you
+remove the trailing <code class="docutils literal notranslate"><span class="pre">&quot;Z&quot;</span></code> character.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Timestamp, formatted as ISO-8601.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">release_timestamp</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="o">.</span><span class="n">get_release_timestamp</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">release_timestamp</span><span class="p">)</span>
+<span class="go">2020-08-08T15:00:09.977840Z</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">release_timestamp</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="o">.</span><span class="n">get_release_timestamp</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parsed_timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">release_timestamp</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">parsed_timestamp</span><span class="p">)</span>
+<span class="go">2020-08-08 15:00:09</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="uk_covid19.api_interface.Cov19API.get_xml">
+<code class="sig-name descname">get_xml</code><span class="sig-paren">(</span><em class="sig-param">save_as=None</em>, <em class="sig-param">as_string=False</em><span class="sig-paren">)</span> &#x2192; xml.etree.ElementTree.Element<a class="reference internal" href="../_modules/uk_covid19/api_interface.html#Cov19API.get_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uk_covid19.api_interface.Cov19API.get_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides full data (all pages) in XML.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>save_as</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>None</em><em>]</em>) – <p>If defined, the results will (also) be saved as a
+file. [Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>]</p>
+<p>The value must be a path to a file with the correct
+extension – i.e. <code class="docutils literal notranslate"><span class="pre">.xml</span></code> for XML).</p>
+</p></li>
+<li><p><strong>as_string</strong> (<em>bool</em>) – <div class="versionadded">
+<p><span class="versionmodified added">New in version 1.1.4.</span></p>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">False</span></code> (default), returns an <code class="docutils literal notranslate"><span class="pre">ElementTree</span></code>
+object. Otherwise, returns the data as an XML string.</p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>xml.etree.ElementTree.Element</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">xml.etree.ElementTree</span> <span class="kn">import</span> <span class="n">tostring</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;areaType=region&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">structure</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;newCases&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesBySpecimenDate&quot;</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">structure</span><span class="o">=</span><span class="n">structure</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">latest_by</span><span class="o">=</span><span class="s1">&#39;newCasesBySpecimenDate&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_xml</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_xml</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_str</span> <span class="o">=</span> <span class="n">tostring</span><span class="p">(</span><span class="n">result_xml</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;unicode&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result_str</span><span class="p">)</span>
+<span class="go">&lt;document&gt;</span>
+<span class="go">    &lt;data&gt;</span>
+<span class="go">        &lt;name&gt;East Midlands&lt;/name&gt;</span>
+<span class="go">        &lt;newCases&gt;0&lt;/newCases&gt;</span>
+<span class="go">    &lt;/data&gt;</span>
+<span class="go">    ...</span>
+<span class="go">&lt;/document&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="uk_covid19.api_interface.Cov19API.head">
+<code class="sig-name descname">head</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uk_covid19/api_interface.html#Cov19API.head"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uk_covid19.api_interface.Cov19API.head" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request header for the given input arguments (<code class="docutils literal notranslate"><span class="pre">filters</span></code>,
+<code class="docutils literal notranslate"><span class="pre">structure</span></code>, and <code class="docutils literal notranslate"><span class="pre">lastest_by</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, str]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;areaType=region&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">structure</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;newCases&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesBySpecimenDate&quot;</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">structure</span><span class="o">=</span><span class="n">structure</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">latest_by</span><span class="o">=</span><span class="s1">&#39;newCasesBySpecimenDate&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">head</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+<span class="go">{&#39;Cache-Control&#39;: &#39;public, max-age=60&#39;, &#39;Content-Length&#39;: &#39;0&#39;,</span>
+<span class="go"> ...</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="uk_covid19.api_interface.Cov19API.last_update">
+<em class="property">property </em><code class="sig-name descname">last_update</code><a class="headerlink" href="#uk_covid19.api_interface.Cov19API.last_update" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>property:</dt><dd><p>Produces the timestamp for the last update in GMT.</p>
+</dd>
+</dl>
+<p>This property supplies the API time - i.e. the time at which the data were
+deployed to the database. Please note that there will always be a difference
+between this time and the timestamp that is displayed on the website, which may
+be accessed via the <code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code> method. The website timestamp
+signifies the time at which the data were release to the API, and by extension
+the website.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The output is extracted from the header and is accurate to
+the second.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The ISO-8601 standard requires a <code class="docutils literal notranslate"><span class="pre">&quot;Z&quot;</span></code> character to be added
+to the end of the timestamp. This is a timezone feature and is
+not recognised by Python’s <code class="docutils literal notranslate"><span class="pre">datetime</span></code> library. It is, however,
+most other libraries; e.g. <code class="docutils literal notranslate"><span class="pre">pandas</span></code>. If you wish to parse the
+timestamp using the the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> library, make sure that you
+remove the trailing <code class="docutils literal notranslate"><span class="pre">&quot;Z&quot;</span></code> character.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Timestamp, formatted as ISO-8601.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;areaType=region&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">structure</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;areaName&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;newCases&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesBySpecimenDate&quot;</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">structure</span><span class="o">=</span><span class="n">structure</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">latest_by</span><span class="o">=</span><span class="s1">&#39;newCasesBySpecimenDate&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">last_update</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+<span class="go">2020-07-27T20:29:16.000000Z</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parsed_timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">timestamp</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">parsed_timestamp</span><span class="p">)</span>
+<span class="go">2020-07-27 20:29:16</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="uk_covid19.api_interface.Cov19API.options">
+<em class="property">static </em><code class="sig-name descname">options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uk_covid19/api_interface.html#Cov19API.options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uk_covid19.api_interface.Cov19API.options" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Staticmethod</dt>
+<dd class="field-odd"><p>Provides the options by calling the <code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code> method of the API.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>API options.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="o">.</span><span class="n">options</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pprint</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+<span class="go">{&#39;info&#39;: {&#39;description&#39;: &quot;Public Health England&#39;s Coronavirus Dashboard API&quot;,</span>
+<span class="go"> &#39;title&#39;: &#39;Dashboard API&#39;,</span>
+<span class="go"> &#39;version&#39;: &#39;1.0&#39;},</span>
+<span class="go"> &#39;openapi&#39;: &#39;3.0.1&#39;,</span>
+<span class="go">  ...</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="uk_covid19.api_interface.Cov19API.total_pages">
+<em class="property">property </em><code class="sig-name descname">total_pages</code><a class="headerlink" href="#uk_covid19.api_interface.Cov19API.total_pages" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>property:</dt><dd><p>Produces the total number of pages for a given set of
+parameters (only after the data are requested).</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Union[int, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="data_format.html" class="btn btn-neutral float-right" title="data_format" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Coronavirus Dashboard API: Python SDK" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020 - Public Health England
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
