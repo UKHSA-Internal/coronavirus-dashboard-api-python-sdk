@@ -163,6 +163,27 @@
 <h2>Software Development Kit for Python<a class="headerlink" href="#software-development-kit-for-python" title="Permalink to this headline">¶</a></h2>
 <p>This website provides documentations and examples for the <strong>Python SDK</strong> library entitled
 <code class="docutils literal notranslate"><span class="pre">uk-covid19</span></code>, as published by Public Health England on <a class="reference external" href="http://coronavirus.data.gov.uk/">Coronavirus (COVID-19) in the UK</a>.</p>
+<p>Similar libraries are also available for <a class="reference external" href="https://github.com/publichealthengland/coronavirus-dashboard-api-javascript-sdk">JavaScript</a>, <a class="reference external" href="https://github.com/publichealthengland/coronavirus-dashboard-api-R-sdk">R</a>, <a class="reference external" href="https://github.com/publichealthengland/coronavirus-dashboard-api-net-sdk">.Net</a>, and <a class="reference external" href="https://github.com/publichealthengland/coronavirus-dashboard-api-elixir-sdk">Elixir</a>.</p>
+</div>
+<div class="section" id="the-api">
+<h2>The API<a class="headerlink" href="#the-api" title="Permalink to this headline">¶</a></h2>
+<p>The API supplies the latest data for the COVID-19 outbreak in the United Kingdom. The
+endpoint for the data provided using this SDK is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="o">.</span><span class="n">coronavirus</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">gov</span><span class="o">.</span><span class="n">uk</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">data</span>
+</pre></div>
+</div>
+<p>See the <a class="reference external" href="https://coronavirus.data.gov.uk/developers-guide">Developers Guide</a> for additional information on the API and see a list of
+latest metrics.</p>
+<div class="section" id="pagination">
+<h3>Pagination<a class="headerlink" href="#pagination" title="Permalink to this headline">¶</a></h3>
+<p>The API responses are restricted to 1000 records per request. If you need more records,
+you will need to use the <code class="docutils literal notranslate"><span class="pre">page</span></code> query parameter to enable pagination.</p>
+<p>As a bonus, the SDKs come with a built-in mechanism to bypass pagination restrictions in
+the API and produce the entire data for a given combination of <code class="docutils literal notranslate"><span class="pre">filters</span></code> and
+<code class="docutils literal notranslate"><span class="pre">structure</span></code> in one go.</p>
+<p>When accessing the API through one of the SDKs, you will always download the entire
+dataset unless the <code class="docutils literal notranslate"><span class="pre">latest_by</span></code> argument is defined.</p>
+<hr class="docutils" />
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Table of Contents</span></p>
 <ul>
@@ -195,7 +216,7 @@
 <li class="toctree-l2"><a class="reference internal" href="uk_covid19/Cov19API.html">api_interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uk_covid19/data_format.html">data_format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uk_covid19/utils.html">utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="uk_covid19/exceptions.html">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uk_covid19/exceptions.html">exceptions</a></li>
 </ul>
 </li>
 </ul>
@@ -205,30 +226,7 @@
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
-</div>
 <hr class="docutils" />
-<div class="section" id="sdk-for-other-languages">
-<h2>SDK for other languages<a class="headerlink" href="#sdk-for-other-languages" title="Permalink to this headline">¶</a></h2>
-<p>Similar libraries are also available for <a class="reference external" href="https://github.com/publichealthengland/coronavirus-dashboard-api-javascript-sdk">JavaScript</a>, <a class="reference external" href="https://github.com/publichealthengland/coronavirus-dashboard-api-R-sdk">R</a>, and <a class="reference external" href="https://github.com/publichealthengland/coronavirus-dashboard-api-net-sdk">.Net</a>.</p>
-</div>
-<div class="section" id="the-api">
-<h2>The API<a class="headerlink" href="#the-api" title="Permalink to this headline">¶</a></h2>
-<p>The API supplies the latest data for the COVID-19 outbreak in the United Kingdom. The
-endpoint for the data provided using this SDK is:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="o">.</span><span class="n">coronavirus</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">gov</span><span class="o">.</span><span class="n">uk</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">data</span>
-</pre></div>
-</div>
-<p>See the <a class="reference external" href="https://coronavirus.data.gov.uk/developers-guide">Developers Guide</a> for additional information on the API and see a list of
-latest metrics.</p>
-<div class="section" id="pagination">
-<h3>Pagination<a class="headerlink" href="#pagination" title="Permalink to this headline">¶</a></h3>
-<p>The API responses are restricted to 1000 records per request. If you need more records,
-you will need to use the <code class="docutils literal notranslate"><span class="pre">page</span></code> query parameter to enable pagination.</p>
-<p>As a bonus, the SDKs come with a built-in mechanism to bypass pagination restrictions in
-the API and produce the entire data for a given combination of <code class="docutils literal notranslate"><span class="pre">filters</span></code> and
-<code class="docutils literal notranslate"><span class="pre">structure</span></code> in one go.</p>
-<p>When accessing the API through one of the SDKs, you will always download the entire
-dataset unless the <code class="docutils literal notranslate"><span class="pre">latest_by</span></code> argument is defined.</p>
 <hr class="docutils" />
 <p>Developed and maintained by <a class="reference external" href="https://www.gov.uk/government/organisations/public-health-england">Public Health England</a>.</p>
 <p>Copyright (c) 2020, Public Health England.</p>

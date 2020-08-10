@@ -17,29 +17,7 @@ Software Development Kit for Python
 This website provides documentations and examples for the **Python SDK** library entitled
 ``uk-covid19``, as published by Public Health England on `Coronavirus (COVID-19) in the UK`_.
 
-
-.. toctree::
-   :maxdepth: 3
-   :glob:
-   :caption: Table of Contents
-
-   pages/getting_started
-   pages/examples/examples.rst
-
-   uk_covid19/index
-
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
-
------
-
-SDK for other languages
------------------------
-
-Similar libraries are also available for `JavaScript`_, `R`_, and `.Net`_.
+Similar libraries are also available for `JavaScript`_, `R`_, `.Net`_, and `Elixir`_.
 
 
 The API
@@ -70,6 +48,26 @@ the API and produce the entire data for a given combination of ``filters`` and
 When accessing the API through one of the SDKs, you will always download the entire
 dataset unless the ``latest_by`` argument is defined.
 
+-------
+
+.. toctree::
+   :maxdepth: 3
+   :glob:
+   :caption: Table of Contents
+
+   pages/getting_started
+   pages/examples/examples.rst
+
+   uk_covid19/index
+
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+
+-----
+
 
 -----------
 
@@ -83,6 +81,7 @@ Copyright (c) 2020, Public Health England.
 .. _`JavaScript`: https://github.com/publichealthengland/coronavirus-dashboard-api-javascript-sdk
 .. _`R`: https://github.com/publichealthengland/coronavirus-dashboard-api-R-sdk
 .. _`.Net`: https://github.com/publichealthengland/coronavirus-dashboard-api-net-sdk
+.. _`Elixir`: https://github.com/publichealthengland/coronavirus-dashboard-api-elixir-sdk
 
 .. |PyPi_Version| image:: https://img.shields.io/pypi/v/uk-covid19
 .. |PyPi_Status| image:: https://img.shields.io/pypi/status/uk-covid19
