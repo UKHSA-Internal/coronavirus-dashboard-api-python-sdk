@@ -8,26 +8,26 @@
 
 Coronavirus (COVID-19) in the UK - API Service
 ==============================================
-
 |PyPi_Version| |PyPi_Status| |Format| |Supported_versions_of_Python| |lgtm| |License|
 
 
-Software Development Kit (SDK) for Python
------------------------------------------
+Software Development Kit for Python
+-----------------------------------
 
-This is a Python SDK for the COVID-19 API, as published by Public Health England
-on `Coronavirus (COVID-19) in the UK`_.
+This website provides documentations and examples for the **Python SDK** library entitled
+``uk-covid19``, as published by Public Health England on `Coronavirus (COVID-19) in the UK`_.
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :glob:
    :caption: Table of Contents
 
    pages/getting_started
-   pages/examples
+   pages/examples/examples.rst
 
-   uk_covid19/uk_covid19
+   uk_covid19/index
+
 
 * :ref:`genindex`
 * :ref:`modindex`
