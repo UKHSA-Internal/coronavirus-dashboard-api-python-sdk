@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Timestamps &mdash; uk-covid19 1.2.0 documentation</title>
+  <title>Timestamps &mdash; uk-covid19 1.2.1 documentation</title>
   
 
   
@@ -255,8 +255,8 @@ means that the timestamp is independent of query metrics and filters.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>It may take up to 60 seconds for the data to be updated when the <em>release timestamp</em>
-(<code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code>) is updated. This is because the cache refresh before the
-new data becomes available. The <strong>API timestamp</strong> (<code class="docutils literal notranslate"><span class="pre">.last_update</span></code>), however, is only
+(<code class="docutils literal notranslate"><span class="pre">.get_release_timestamp()</span></code>) is updated. This is because the cache must refresh before
+the new data becomes available. The <strong>API timestamp</strong> (<code class="docutils literal notranslate"><span class="pre">.last_update</span></code>), however, is only
 updated when the cache has been refreshed. This means that you can only be certain that
 you are receiving the most up-to-data data when the <code class="docutils literal notranslate"><span class="pre">.last_update</span></code> timestamp for your
 specific parameters have been updated.</p>
