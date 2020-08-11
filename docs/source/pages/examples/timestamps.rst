@@ -93,8 +93,8 @@ Latest website timestamp
 .. warning::
 
     It may take up to 60 seconds for the data to be updated when the *release timestamp*
-    (``.get_release_timestamp()``) is updated. This is because the cache refresh before the
-    new data becomes available. The **API timestamp** (``.last_update``), however, is only
+    (``.get_release_timestamp()``) is updated. This is because the cache must refresh before
+    the new data becomes available. The **API timestamp** (``.last_update``), however, is only
     updated when the cache has been refreshed. This means that you can only be certain that
     you are receiving the most up-to-data data when the ``.last_update`` timestamp for your
     specific parameters have been updated.
