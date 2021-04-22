@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>uk_covid19.api_interface &mdash; uk-covid19 1.2.1 documentation</title>
+  <title>uk_covid19.api_interface &mdash; uk-covid19 1.2.2 documentation</title>
   
 
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -49,7 +52,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> uk-covid19
+            <a href="../../index.html" class="icon icon-home"> uk-covid19
           
 
           
@@ -110,6 +113,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -206,6 +211,13 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="n">FiltersType</span><span class="p">,</span> <span class="n">structure</span><span class="p">:</span> <span class="n">StructureType</span><span class="p">,</span>
                  <span class="n">latest_by</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="n">filters</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">))</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">structure</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Nested structures are no longer supported. Please define a flat &quot;</span>
+                <span class="s2">&quot;structure instead.&quot;</span>
+            <span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">latest_by</span> <span class="o">=</span> <span class="n">latest_by</span>
 
@@ -442,21 +454,27 @@
             <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="mi">1</span>
         <span class="p">})</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;page&quot;</span><span class="p">]</span>
+
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">request</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">,</span>
                          <span class="n">verify</span><span class="o">=</span><span class="n">certifi</span><span class="o">.</span><span class="n">where</span><span class="p">())</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&gt;=</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">FailedRequestError</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span>
 
-                <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">NO_CONTENT</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">response</span>
+                    <span class="k">break</span>
+                <span class="k">elif</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">NO_CONTENT</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_total_pages</span> <span class="o">=</span> <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;page&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
                     <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_last_update</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Last-Modified&quot;</span><span class="p">]</span>
+                    <span class="k">yield</span> <span class="n">response</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">_last_update</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Last-Modified&quot;</span><span class="p">]</span>
-
-                <span class="k">yield</span> <span class="n">response</span>
-
-            <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;page&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_by</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;page&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
 <div class="viewcode-block" id="Cov19API.get_json"><a class="viewcode-back" href="../../uk_covid19/Cov19API.html#uk_covid19.api_interface.Cov19API.get_json">[docs]</a>    <span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_as</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">as_string</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
@@ -732,28 +750,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020 - Public Health England
+        &#169; Copyright 2021 - Public Health England.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

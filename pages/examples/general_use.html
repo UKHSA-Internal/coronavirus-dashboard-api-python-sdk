@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>General use &mdash; uk-covid19 1.2.1 documentation</title>
+  <title>General use &mdash; uk-covid19 1.2.2 documentation</title>
   
 
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -51,7 +54,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> uk-covid19
+            <a href="../../index.html" class="icon icon-home"> uk-covid19
           
 
           
@@ -142,6 +145,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -155,7 +160,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../_sources/pages/examples/general_use.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -200,8 +205,8 @@ in the <a class="reference external" href="https://coronavirus.data.gov.uk/devel
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">newCasesByPublishDate</span></code>: New cases (by publish date)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">cumCasesByPublishDate</span></code>: Cumulative cases (by publish date)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">newDeathsByDeathDate</span></code>: New deaths (by death date)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cumDeathsByDeathDate</span></code>: Cumulative deaths (by death date)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">newDeaths28DaysByDeathDate</span></code>: New deaths (by death date)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cumDeaths28DaysByDeathDate</span></code>: Cumulative deaths (by death date)</p></li>
 </ul>
 <p>In its simplest form, we construct the structure as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cases_and_deaths</span> <span class="o">=</span> <span class="p">{</span>
@@ -210,8 +215,8 @@ in the <a class="reference external" href="https://coronavirus.data.gov.uk/devel
     <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;areaCode&quot;</span><span class="p">,</span>
     <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">,</span>
     <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumDeathsByDeathDate&quot;</span>
+    <span class="s2">&quot;newDeaths28DaysByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newDeaths28DaysByDeathDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumDeaths28DaysByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumDeaths28DaysByDeathDate&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -240,8 +245,8 @@ or <code class="docutils literal notranslate"><span class="pre">.get_dataframe()
             <span class="s1">&#39;areaCode&#39;</span><span class="p">:</span> <span class="s1">&#39;E92000001&#39;</span><span class="p">,</span>
             <span class="s1">&#39;newCasesByPublishDate&#39;</span><span class="p">:</span> <span class="mi">547</span><span class="p">,</span>
             <span class="s1">&#39;cumCasesByPublishDate&#39;</span><span class="p">:</span> <span class="mi">259022</span><span class="p">,</span>
-            <span class="s1">&#39;newDeathsByDeathDate&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s1">&#39;cumDeathsByDeathDate&#39;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="s1">&#39;newDeaths28DaysByDeathDate&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;cumDeaths28DaysByDeathDate&#39;</span><span class="p">:</span> <span class="kc">None</span>
         <span class="p">},</span>
         <span class="p">{</span>
             <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-07-27&#39;</span><span class="p">,</span>
@@ -249,8 +254,8 @@ or <code class="docutils literal notranslate"><span class="pre">.get_dataframe()
             <span class="s1">&#39;areaCode&#39;</span><span class="p">:</span> <span class="s1">&#39;E92000001&#39;</span><span class="p">,</span>
             <span class="s1">&#39;newCasesByPublishDate&#39;</span><span class="p">:</span> <span class="mi">616</span><span class="p">,</span>
             <span class="s1">&#39;cumCasesByPublishDate&#39;</span><span class="p">:</span> <span class="mi">258475</span><span class="p">,</span>
-            <span class="s1">&#39;newDeathsByDeathDate&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
-            <span class="s1">&#39;cumDeathsByDeathDate&#39;</span><span class="p">:</span> <span class="mi">41282</span>
+            <span class="s1">&#39;newDeaths28DaysByDeathDate&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="s1">&#39;cumDeaths28DaysByDeathDate&#39;</span><span class="p">:</span> <span class="mi">41282</span>
         <span class="p">},</span>
         <span class="o">...</span>
     <span class="p">],</span>
@@ -268,37 +273,29 @@ or <code class="docutils literal notranslate"><span class="pre">.get_dataframe()
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="timestamps.html" class="btn btn-neutral float-right" title="Timestamps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="timestamps.html" class="btn btn-neutral float-right" title="Timestamps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020 - Public Health England
+        &#169; Copyright 2021 - Public Health England.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

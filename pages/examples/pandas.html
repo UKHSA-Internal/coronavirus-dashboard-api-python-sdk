@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Pandas DataFrame &mdash; uk-covid19 1.2.1 documentation</title>
+  <title>Pandas DataFrame &mdash; uk-covid19 1.2.2 documentation</title>
   
 
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -51,7 +54,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> uk-covid19
+            <a href="../../index.html" class="icon icon-home"> uk-covid19
           
 
           
@@ -135,6 +138,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -148,7 +153,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../_sources/pages/examples/pandas.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -183,8 +188,8 @@ library and must be installed separately.</p>
     <span class="s2">&quot;areaCode&quot;</span><span class="p">:</span> <span class="s2">&quot;areaCode&quot;</span><span class="p">,</span>
     <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newCasesByPublishDate&quot;</span><span class="p">,</span>
     <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumCasesByPublishDate&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newDeathsByDeathDate&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cumDeathsByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumDeathsByDeathDate&quot;</span>
+    <span class="s2">&quot;newDeaths28DaysByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;newDeaths28DaysByDeathDate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumDeaths28DaysByDeathDate&quot;</span><span class="p">:</span> <span class="s2">&quot;cumDeaths28DaysByDeathDate&quot;</span>
 <span class="p">}</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="n">Cov19API</span><span class="p">(</span>
@@ -197,7 +202,7 @@ library and must be installed separately.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="n">date</span>          <span class="n">areaName</span>   <span class="n">areaCode</span>  <span class="n">newCasesByPublishDate</span>  <span class="n">cumCasesByPublishDate</span> <span class="n">newDeathsByDeathDate</span> <span class="n">cumDeathsByDeathDate</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="n">date</span>          <span class="n">areaName</span>   <span class="n">areaCode</span>  <span class="n">newCasesByPublishDate</span>  <span class="n">cumCasesByPublishDate</span> <span class="n">newDeaths28DaysByDeathDate</span> <span class="n">cumDeaths28DaysByDeathDate</span>
 <span class="mi">0</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">08</span>           <span class="n">England</span>  <span class="n">E92000001</span>                    <span class="mi">679</span>               <span class="mf">267324.0</span>                 <span class="kc">None</span>                 <span class="kc">None</span>
 <span class="mi">1</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">08</span>  <span class="n">Northern</span> <span class="n">Ireland</span>  <span class="n">N92000002</span>                      <span class="mi">0</span>                    <span class="n">NaN</span>                 <span class="kc">None</span>                 <span class="kc">None</span>
 <span class="mi">2</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">08</span>          <span class="n">Scotland</span>  <span class="n">S92000003</span>                     <span class="mi">60</span>                <span class="mf">18950.0</span>                 <span class="kc">None</span>                 <span class="kc">None</span>
@@ -211,37 +216,29 @@ library and must be installed separately.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../../uk_covid19/index.html" class="btn btn-neutral float-right" title="Coronavirus Dashboard API: Python SDK" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="data_as_string.html" class="btn btn-neutral float-left" title="Stringified JSON or XML" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="../../uk_covid19/index.html" class="btn btn-neutral float-right" title="Coronavirus Dashboard API: Python SDK" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="data_as_string.html" class="btn btn-neutral float-left" title="Stringified JSON or XML" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020 - Public Health England
+        &#169; Copyright 2021 - Public Health England.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
