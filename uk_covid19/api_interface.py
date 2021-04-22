@@ -55,6 +55,13 @@ class Cov19API:
     def __init__(self, filters: FiltersType, structure: StructureType,
                  latest_by: Union[str, None] = None):
         self.filters = filters
+
+        if any(isinstance(value, (list, dict)) for value in structure):
+            raise TypeError(
+                "Nested structures are no longer supported. Please define a flat "
+                "structure instead."
+            )
+
         self.structure = structure
         self.latest_by = latest_by
 
@@ -291,21 +298,27 @@ class Cov19API:
             "page": 1
         })
 
+        if self.latest_by is not None:
+            del api_params["page"]
+
         while True:
             with request("GET", self.endpoint, params=api_params,
                          verify=certifi.where()) as response:
                 if response.status_code >= HTTPStatus.BAD_REQUEST:
                     raise FailedRequestError(response=response, params=api_params)
 
-                if response.status_code == HTTPStatus.NO_CONTENT:
+                if self.latest_by is not None:
+                    yield response
+                    break
+                elif response.status_code == HTTPStatus.NO_CONTENT:
                     self._total_pages = api_params["page"] - 1
                     break
+                else:
+                    self._last_update = response.headers["Last-Modified"]
+                    yield response
 
-                self._last_update = response.headers["Last-Modified"]
-
-                yield response
-
-            api_params["page"] += 1
+            if self.latest_by is None:
+                api_params["page"] += 1
 
     def get_json(self, save_as: Union[str, None] = None,
                  as_string: bool = False) -> Union[dict, str]:
